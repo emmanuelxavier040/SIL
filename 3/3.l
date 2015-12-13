@@ -5,7 +5,7 @@
 	#include "y.tab.h"
 	#include "var.h"
 
-	#define YYSTYPE struct vnode*
+	
 	struct vnode* ptr;
 
 %}

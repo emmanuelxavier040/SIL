@@ -109,6 +109,7 @@ dstatement : INTEGER ID ';'   {
                                               strcpy(symboltable[ind]->type,"integer");                                        
                                               symboltable[ind]->size = *($4->datavalue.i);
                                               
+
                                               free(symboltable[ind]->datavalue.i);
                                               symboltable[ind]->datavalue.i = (int*)malloc(symboltable[ind]->size * sizeof(int));
                                               memset(symboltable[ind]->datavalue.i,0,symboltable[ind]->size);                                            
@@ -161,8 +162,18 @@ assignment : ID '=' expr ';'        {
                                         *(symboltable[i]->datavalue.b) = *($3->datavalue.b);
 
                                                                         
-                                                                         
-                                      
+                                      if(strcmp($1->type,"integer")==0){                                        
+                                        if($1->datavalue.i != NULL) free($1->datavalue.i);
+                                      }
+                                      else{
+                                        if($1->datavalue.b != NULL) free($1->datavalue.b);
+                                      }
+                                      if(strcmp($3->type,"integer")==0){                                        
+                                        if($3->datavalue.i != NULL) free($3->datavalue.i);
+                                      }
+                                      else{
+                                        if($3->datavalue.b != NULL) free($3->datavalue.b);
+                                      }                                     
                                       free($1);
                                       free($3);
 
@@ -183,8 +194,28 @@ assignment : ID '=' expr ';'        {
                                                   if(strcmp(symboltable[i]->type,"integer")==0){                                        
                                                     *(symboltable[i]->datavalue.i + *($3->datavalue.i)) = *($6->datavalue.i);
                                                   }
-                                                  else
+                                                  else{
                                                     *(symboltable[i]->datavalue.b + *($3->datavalue.i)) = *($6->datavalue.b);
+                                                  }
+
+                                                  if(strcmp($1->type,"integer")==0){                                        
+                                                    if($1->datavalue.i != NULL) free($1->datavalue.i);
+                                                  }
+                                                  else{
+                                                    if($1->datavalue.b != NULL) free($1->datavalue.b);
+                                                  }
+                                                  if(strcmp($3->type,"integer")==0){                                        
+                                                    if($3->datavalue.i != NULL) free($3->datavalue.i);
+                                                  }
+                                                  else{
+                                                    if($3->datavalue.b != NULL) free($3->datavalue.b);
+                                                  }                                               
+                                                  if(strcmp($6->type,"integer")==0){                                        
+                                                    if($6->datavalue.i != NULL) free($6->datavalue.i);
+                                                  }
+                                                  else{
+                                                    if($6->datavalue.b != NULL) free($6->datavalue.b);
+                                                  }
 
                                                   free($1);
                                                   free($3);
@@ -194,7 +225,7 @@ assignment : ID '=' expr ';'        {
 
 
 
-expr : expr '+' expr             {  printf("pani\n");$$ = operate_int($1,$3,"+"); }
+expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
      | expr '-' expr             {  $$ = operate_int($1,$3,"-"); }
      | expr '*' expr             {  $$ = operate_int($1,$3,"*"); }
      | expr '/' expr             {  $$ = operate_int($1,$3,"/"); }
@@ -222,7 +253,7 @@ expr : expr '+' expr             {  printf("pani\n");$$ = operate_int($1,$3,"+")
                                   }
 
      | ID '[' expr ']'            {
-                                    printf("1\n");
+                                
                                     int i = checkpresent($1);                                  
                                     strcpy($1->type,symboltable[i]->type);
 
@@ -232,8 +263,14 @@ expr : expr '+' expr             {  printf("pani\n");$$ = operate_int($1,$3,"+")
                                      else
                                        *($1->datavalue.b) = *(symboltable[i]->datavalue.b + *($3->datavalue.i));
 
-                                    $$=$1;
-                                    printf("hi\n");
+                                    $$=$1;                                  
+                                    
+                                    if(strcmp($3->type,"integer")==0){                                        
+                                      if($3->datavalue.i != NULL) free($3->datavalue.i);
+                                    }
+                                    else{
+                                      if($3->datavalue.b != NULL) free($3->datavalue.b);
+                                    }
                                     free($3);
                                   }
 
@@ -319,10 +356,19 @@ struct vnode* operate_int(struct vnode* one, struct vnode* three, char op[])
 
     //printf("%d\n",*(node->datavalue.i));
     
-    free(one->datavalue.i);
-    free(three->datavalue.i);
-    free(one->datavalue.b);
-    free(three->datavalue.b);
+
+    if(strcmp(one->type,"integer")==0){                                        
+      if(one->datavalue.i != NULL) free(one->datavalue.i);
+    }
+    else{
+      if(one->datavalue.b != NULL) free(one->datavalue.b);
+    }
+    if(strcmp(three->type,"integer")==0){                                        
+      if(three->datavalue.i != NULL) free(three->datavalue.i);
+    }
+    else{
+      if(three->datavalue.b != NULL) free(three->datavalue.b);
+    }  
     free(one);
     free(three);
 

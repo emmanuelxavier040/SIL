@@ -492,12 +492,12 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    63,    63,    85,    88,    89,    92,    99,   106,   118,
-     132,   135,   136,   139,   140,   141,   144,   171,   197,   198,
-     199,   200,   201,   202,   203,   204,   206,   207,   208,   209,
-     210,   212,   213,   224,   240,   243,   248,   249,   252
+       0,    63,    63,    85,    88,    89,    92,    99,   106,   119,
+     133,   136,   137,   140,   141,   142,   145,   182,   228,   229,
+     230,   231,   232,   233,   234,   235,   237,   238,   239,   240,
+     241,   243,   244,   255,   277,   280,   285,   286,   289
 };
 #endif
 
@@ -1423,17 +1423,18 @@ yyreduce:
                                               strcpy(symboltable[ind]->type,"integer");                                        
                                               symboltable[ind]->size = *((yyvsp[-2])->datavalue.i);
                                               
+
                                               free(symboltable[ind]->datavalue.i);
                                               symboltable[ind]->datavalue.i = (int*)malloc(symboltable[ind]->size * sizeof(int));
                                               memset(symboltable[ind]->datavalue.i,0,symboltable[ind]->size);                                            
                                               ind++;
 
                                              }
-#line 1433 "y.tab.c" /* yacc.c:1646  */
+#line 1434 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 118 "3.y" /* yacc.c:1646  */
+#line 119 "3.y" /* yacc.c:1646  */
     {
 
                                               symboltable[ind] = (yyvsp[-4]);                                        
@@ -1446,29 +1447,29 @@ yyreduce:
                                               ind++;
 
                                              }
-#line 1450 "y.tab.c" /* yacc.c:1646  */
+#line 1451 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 132 "3.y" /* yacc.c:1646  */
+#line 133 "3.y" /* yacc.c:1646  */
     { }
-#line 1456 "y.tab.c" /* yacc.c:1646  */
+#line 1457 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 136 "3.y" /* yacc.c:1646  */
+#line 137 "3.y" /* yacc.c:1646  */
     { }
-#line 1462 "y.tab.c" /* yacc.c:1646  */
+#line 1463 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 139 "3.y" /* yacc.c:1646  */
+#line 140 "3.y" /* yacc.c:1646  */
     { }
-#line 1468 "y.tab.c" /* yacc.c:1646  */
+#line 1469 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 144 "3.y" /* yacc.c:1646  */
+#line 145 "3.y" /* yacc.c:1646  */
     {                                      
                                       int i = checkpresent((yyvsp[-3]));
                                       if(strcmp(symboltable[i]->type,(yyvsp[-1])->type)!=0){
@@ -1489,17 +1490,27 @@ yyreduce:
                                         *(symboltable[i]->datavalue.b) = *((yyvsp[-1])->datavalue.b);
 
                                                                         
-                                                                         
-                                      
+                                      if(strcmp((yyvsp[-3])->type,"integer")==0){                                        
+                                        if((yyvsp[-3])->datavalue.i != NULL) free((yyvsp[-3])->datavalue.i);
+                                      }
+                                      else{
+                                        if((yyvsp[-3])->datavalue.b != NULL) free((yyvsp[-3])->datavalue.b);
+                                      }
+                                      if(strcmp((yyvsp[-1])->type,"integer")==0){                                        
+                                        if((yyvsp[-1])->datavalue.i != NULL) free((yyvsp[-1])->datavalue.i);
+                                      }
+                                      else{
+                                        if((yyvsp[-1])->datavalue.b != NULL) free((yyvsp[-1])->datavalue.b);
+                                      }                                     
                                       free((yyvsp[-3]));
                                       free((yyvsp[-1]));
 
                                     }
-#line 1499 "y.tab.c" /* yacc.c:1646  */
+#line 1510 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 171 "3.y" /* yacc.c:1646  */
+#line 182 "3.y" /* yacc.c:1646  */
     {
                                                   int i = checkpresent((yyvsp[-6]));
                                                   if(strcmp(symboltable[i]->type,(yyvsp[-1])->type)!=0){
@@ -1515,102 +1526,122 @@ yyreduce:
                                                   if(strcmp(symboltable[i]->type,"integer")==0){                                        
                                                     *(symboltable[i]->datavalue.i + *((yyvsp[-4])->datavalue.i)) = *((yyvsp[-1])->datavalue.i);
                                                   }
-                                                  else
+                                                  else{
                                                     *(symboltable[i]->datavalue.b + *((yyvsp[-4])->datavalue.i)) = *((yyvsp[-1])->datavalue.b);
+                                                  }
+
+                                                  if(strcmp((yyvsp[-6])->type,"integer")==0){                                        
+                                                    if((yyvsp[-6])->datavalue.i != NULL) free((yyvsp[-6])->datavalue.i);
+                                                  }
+                                                  else{
+                                                    if((yyvsp[-6])->datavalue.b != NULL) free((yyvsp[-6])->datavalue.b);
+                                                  }
+                                                  if(strcmp((yyvsp[-4])->type,"integer")==0){                                        
+                                                    if((yyvsp[-4])->datavalue.i != NULL) free((yyvsp[-4])->datavalue.i);
+                                                  }
+                                                  else{
+                                                    if((yyvsp[-4])->datavalue.b != NULL) free((yyvsp[-4])->datavalue.b);
+                                                  }                                               
+                                                  if(strcmp((yyvsp[-1])->type,"integer")==0){                                        
+                                                    if((yyvsp[-1])->datavalue.i != NULL) free((yyvsp[-1])->datavalue.i);
+                                                  }
+                                                  else{
+                                                    if((yyvsp[-1])->datavalue.b != NULL) free((yyvsp[-1])->datavalue.b);
+                                                  }
 
                                                   free((yyvsp[-6]));
                                                   free((yyvsp[-4]));
                                                   free((yyvsp[-1]));
                                                 }
-#line 1526 "y.tab.c" /* yacc.c:1646  */
+#line 1557 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 197 "3.y" /* yacc.c:1646  */
-    {  printf("pani\n");(yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"+"); }
-#line 1532 "y.tab.c" /* yacc.c:1646  */
+#line 228 "3.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"+"); }
+#line 1563 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 198 "3.y" /* yacc.c:1646  */
+#line 229 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"-"); }
-#line 1538 "y.tab.c" /* yacc.c:1646  */
+#line 1569 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 199 "3.y" /* yacc.c:1646  */
+#line 230 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"*"); }
-#line 1544 "y.tab.c" /* yacc.c:1646  */
+#line 1575 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 200 "3.y" /* yacc.c:1646  */
+#line 231 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"/"); }
-#line 1550 "y.tab.c" /* yacc.c:1646  */
+#line 1581 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 201 "3.y" /* yacc.c:1646  */
+#line 232 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<=");}
-#line 1556 "y.tab.c" /* yacc.c:1646  */
+#line 1587 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 202 "3.y" /* yacc.c:1646  */
+#line 233 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">=");}
-#line 1562 "y.tab.c" /* yacc.c:1646  */
+#line 1593 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 203 "3.y" /* yacc.c:1646  */
+#line 234 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<");}
-#line 1568 "y.tab.c" /* yacc.c:1646  */
+#line 1599 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 204 "3.y" /* yacc.c:1646  */
+#line 235 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">");}
-#line 1574 "y.tab.c" /* yacc.c:1646  */
+#line 1605 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 206 "3.y" /* yacc.c:1646  */
+#line 237 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"==");}
-#line 1580 "y.tab.c" /* yacc.c:1646  */
+#line 1611 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 207 "3.y" /* yacc.c:1646  */
+#line 238 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"!=");}
-#line 1586 "y.tab.c" /* yacc.c:1646  */
+#line 1617 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 208 "3.y" /* yacc.c:1646  */
+#line 239 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"&&");}
-#line 1592 "y.tab.c" /* yacc.c:1646  */
+#line 1623 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 209 "3.y" /* yacc.c:1646  */
+#line 240 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"||");}
-#line 1598 "y.tab.c" /* yacc.c:1646  */
+#line 1629 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 210 "3.y" /* yacc.c:1646  */
+#line 241 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[0]),(yyvsp[0]),"!");}
-#line 1604 "y.tab.c" /* yacc.c:1646  */
+#line 1635 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 212 "3.y" /* yacc.c:1646  */
+#line 243 "3.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[-1]);}
-#line 1610 "y.tab.c" /* yacc.c:1646  */
+#line 1641 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 213 "3.y" /* yacc.c:1646  */
+#line 244 "3.y" /* yacc.c:1646  */
     {                                   
                                     int i = checkpresent((yyvsp[0]));                                  
                                     strcpy((yyvsp[0])->type,symboltable[i]->type);
@@ -1621,13 +1652,13 @@ yyreduce:
 
                                     (yyval)=(yyvsp[0]);
                                   }
-#line 1625 "y.tab.c" /* yacc.c:1646  */
+#line 1656 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 224 "3.y" /* yacc.c:1646  */
+#line 255 "3.y" /* yacc.c:1646  */
     {
-                                    printf("1\n");
+                                
                                     int i = checkpresent((yyvsp[-3]));                                  
                                     strcpy((yyvsp[-3])->type,symboltable[i]->type);
 
@@ -1637,37 +1668,43 @@ yyreduce:
                                      else
                                        *((yyvsp[-3])->datavalue.b) = *(symboltable[i]->datavalue.b + *((yyvsp[-1])->datavalue.i));
 
-                                    (yyval)=(yyvsp[-3]);
-                                    printf("hi\n");
+                                    (yyval)=(yyvsp[-3]);                                  
+                                    
+                                    if(strcmp((yyvsp[-1])->type,"integer")==0){                                        
+                                      if((yyvsp[-1])->datavalue.i != NULL) free((yyvsp[-1])->datavalue.i);
+                                    }
+                                    else{
+                                      if((yyvsp[-1])->datavalue.b != NULL) free((yyvsp[-1])->datavalue.b);
+                                    }
                                     free((yyvsp[-1]));
                                   }
-#line 1645 "y.tab.c" /* yacc.c:1646  */
+#line 1682 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 240 "3.y" /* yacc.c:1646  */
+#line 277 "3.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);
                                   }
-#line 1653 "y.tab.c" /* yacc.c:1646  */
+#line 1690 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 243 "3.y" /* yacc.c:1646  */
+#line 280 "3.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);
                                   }
-#line 1661 "y.tab.c" /* yacc.c:1646  */
+#line 1698 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 248 "3.y" /* yacc.c:1646  */
+#line 285 "3.y" /* yacc.c:1646  */
     {if(*((yyvsp[-4])->datavalue.b) == false){printf("condition false\n");}}
-#line 1667 "y.tab.c" /* yacc.c:1646  */
+#line 1704 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1671 "y.tab.c" /* yacc.c:1646  */
+#line 1708 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1895,7 +1932,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 255 "3.y" /* yacc.c:1906  */
+#line 292 "3.y" /* yacc.c:1906  */
 
 
 
@@ -1963,10 +2000,19 @@ struct vnode* operate_int(struct vnode* one, struct vnode* three, char op[])
 
     //printf("%d\n",*(node->datavalue.i));
     
-    free(one->datavalue.i);
-    free(three->datavalue.i);
-    free(one->datavalue.b);
-    free(three->datavalue.b);
+
+    if(strcmp(one->type,"integer")==0){                                        
+      if(one->datavalue.i != NULL) free(one->datavalue.i);
+    }
+    else{
+      if(one->datavalue.b != NULL) free(one->datavalue.b);
+    }
+    if(strcmp(three->type,"integer")==0){                                        
+      if(three->datavalue.i != NULL) free(three->datavalue.i);
+    }
+    else{
+      if(three->datavalue.b != NULL) free(three->datavalue.b);
+    }  
     free(one);
     free(three);
 

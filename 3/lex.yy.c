@@ -537,7 +537,7 @@ char *yytext;
 	#include "y.tab.h"
 	#include "var.h"
 
-	#define YYSTYPE struct vnode*
+	
 	struct vnode* ptr;
 
 #line 544 "lex.yy.c"
