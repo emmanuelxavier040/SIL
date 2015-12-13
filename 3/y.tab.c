@@ -498,7 +498,7 @@ static const yytype_uint8 yyrline[] =
        0,    64,    64,    86,    89,    90,    93,   100,   107,   120,
      134,   137,   138,   141,   142,   143,   146,   171,   199,   200,
      201,   202,   203,   204,   205,   206,   208,   209,   210,   211,
-     212,   214,   215,   226,   243,   246,   251,   252,   255
+     212,   214,   215,   226,   241,   244,   249,   250,   253
 };
 #endif
 
@@ -1633,44 +1633,42 @@ yyreduce:
                                     int i = checkpresent((yyvsp[-3]));                                  
                                     strcpy((yyvsp[-3])->type,symboltable[i]->type);
 
-                                     if(strcmp(symboltable[i]->type,"integer")==0){                                        
-                                       *((yyvsp[-3])->datavalue.i) = *(symboltable[i]->datavalue.i + *((yyvsp[-1])->datavalue.i));
-                                     }
+                                     if(strcmp(symboltable[i]->type,"integer")==0)                                       
+                                       *((yyvsp[-3])->datavalue.i) = *(symboltable[i]->datavalue.i + *((yyvsp[-1])->datavalue.i));                                     
                                      else
                                        *((yyvsp[-3])->datavalue.b) = *(symboltable[i]->datavalue.b + *((yyvsp[-1])->datavalue.i));
 
                                     (yyval)=(yyvsp[-3]);                                  
-                                    
-                                   
+
                                     free_node((yyvsp[-1]));
                                   }
-#line 1648 "y.tab.c" /* yacc.c:1646  */
+#line 1646 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 243 "3.y" /* yacc.c:1646  */
+#line 241 "3.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);
                                   }
-#line 1656 "y.tab.c" /* yacc.c:1646  */
+#line 1654 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 246 "3.y" /* yacc.c:1646  */
+#line 244 "3.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);
                                   }
-#line 1664 "y.tab.c" /* yacc.c:1646  */
+#line 1662 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 251 "3.y" /* yacc.c:1646  */
+#line 249 "3.y" /* yacc.c:1646  */
     {if(*((yyvsp[-4])->datavalue.b) == false){printf("condition false\n");}}
-#line 1670 "y.tab.c" /* yacc.c:1646  */
+#line 1668 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1674 "y.tab.c" /* yacc.c:1646  */
+#line 1672 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1898,7 +1896,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 258 "3.y" /* yacc.c:1906  */
+#line 256 "3.y" /* yacc.c:1906  */
 
 
 
@@ -2060,12 +2058,23 @@ struct vnode* operate_int_bool(struct vnode* one, struct vnode* three, char op[]
 
 void free_node(struct vnode* node)
 {
-  if(node != NULL){
-   if(strcmp(node->type,"integer")==0)
-   {if(node->datavalue.i != NULL) free(node->datavalue.i);}
-   else{if(node->datavalue.b != NULL) free(node->datavalue.b);}
+  if(node != NULL)
+  {
+      if(strcmp(node->type,"integer")==0)
+      {
+            if(node->datavalue.i != NULL) 
+              free(node->datavalue.i);
+            node->datavalue.i = NULL;
+      }
+      else
+      {
+            if(node->datavalue.b != NULL) 
+              free(node->datavalue.b);
+            node->datavalue.b = NULL;
+      }
 
-   free(node); 
+   free(node);
+   node = NULL; 
   }
     
 }

@@ -228,15 +228,13 @@ expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
                                     int i = checkpresent($1);                                  
                                     strcpy($1->type,symboltable[i]->type);
 
-                                     if(strcmp(symboltable[i]->type,"integer")==0){                                        
-                                       *($1->datavalue.i) = *(symboltable[i]->datavalue.i + *($3->datavalue.i));
-                                     }
+                                     if(strcmp(symboltable[i]->type,"integer")==0)                                       
+                                       *($1->datavalue.i) = *(symboltable[i]->datavalue.i + *($3->datavalue.i));                                     
                                      else
                                        *($1->datavalue.b) = *(symboltable[i]->datavalue.b + *($3->datavalue.i));
 
                                     $$=$1;                                  
-                                    
-                                   
+
                                     free_node($3);
                                   }
 
@@ -416,12 +414,23 @@ struct vnode* operate_int_bool(struct vnode* one, struct vnode* three, char op[]
 
 void free_node(struct vnode* node)
 {
-  if(node != NULL){
-   if(strcmp(node->type,"integer")==0)
-   {if(node->datavalue.i != NULL) free(node->datavalue.i);}
-   else{if(node->datavalue.b != NULL) free(node->datavalue.b);}
+  if(node != NULL)
+  {
+      if(strcmp(node->type,"integer")==0)
+      {
+            if(node->datavalue.i != NULL) 
+              free(node->datavalue.i);
+            node->datavalue.i = NULL;
+      }
+      else
+      {
+            if(node->datavalue.b != NULL) 
+              free(node->datavalue.b);
+            node->datavalue.b = NULL;
+      }
 
-   free(node); 
+   free(node);
+   node = NULL; 
   }
     
 }
