@@ -14,6 +14,7 @@
 
     struct vnode* operate_int(struct vnode*, struct vnode*, char*);
     struct vnode* operate_int_bool(struct vnode*, struct vnode*, char*);
+    void free_node(struct vnode*);
 
 %}
 
@@ -161,21 +162,9 @@ assignment : ID '=' expr ';'        {
                                       else
                                         *(symboltable[i]->datavalue.b) = *($3->datavalue.b);
 
-                                                                        
-                                      if(strcmp($1->type,"integer")==0){                                        
-                                        if($1->datavalue.i != NULL) free($1->datavalue.i);
-                                      }
-                                      else{
-                                        if($1->datavalue.b != NULL) free($1->datavalue.b);
-                                      }
-                                      if(strcmp($3->type,"integer")==0){                                        
-                                        if($3->datavalue.i != NULL) free($3->datavalue.i);
-                                      }
-                                      else{
-                                        if($3->datavalue.b != NULL) free($3->datavalue.b);
-                                      }                                     
-                                      free($1);
-                                      free($3);
+                                                                                                                                                  
+                                      free_node($1);
+                                      free_node($3);
 
                                     }
 
@@ -198,28 +187,10 @@ assignment : ID '=' expr ';'        {
                                                     *(symboltable[i]->datavalue.b + *($3->datavalue.i)) = *($6->datavalue.b);
                                                   }
 
-                                                  if(strcmp($1->type,"integer")==0){                                        
-                                                    if($1->datavalue.i != NULL) free($1->datavalue.i);
-                                                  }
-                                                  else{
-                                                    if($1->datavalue.b != NULL) free($1->datavalue.b);
-                                                  }
-                                                  if(strcmp($3->type,"integer")==0){                                        
-                                                    if($3->datavalue.i != NULL) free($3->datavalue.i);
-                                                  }
-                                                  else{
-                                                    if($3->datavalue.b != NULL) free($3->datavalue.b);
-                                                  }                                               
-                                                  if(strcmp($6->type,"integer")==0){                                        
-                                                    if($6->datavalue.i != NULL) free($6->datavalue.i);
-                                                  }
-                                                  else{
-                                                    if($6->datavalue.b != NULL) free($6->datavalue.b);
-                                                  }
-
-                                                  free($1);
-                                                  free($3);
-                                                  free($6);
+                                                  
+                                                  free_node($1);
+                                                  free_node($3);
+                                                  free_node($6);
                                                 }
            ;
 
@@ -265,13 +236,8 @@ expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
 
                                     $$=$1;                                  
                                     
-                                    if(strcmp($3->type,"integer")==0){                                        
-                                      if($3->datavalue.i != NULL) free($3->datavalue.i);
-                                    }
-                                    else{
-                                      if($3->datavalue.b != NULL) free($3->datavalue.b);
-                                    }
-                                    free($3);
+                                   
+                                    free_node($3);
                                   }
 
      | NUM                        {
@@ -355,22 +321,9 @@ struct vnode* operate_int(struct vnode* one, struct vnode* three, char op[])
     }
 
     //printf("%d\n",*(node->datavalue.i));
-    
 
-    if(strcmp(one->type,"integer")==0){                                        
-      if(one->datavalue.i != NULL) free(one->datavalue.i);
-    }
-    else{
-      if(one->datavalue.b != NULL) free(one->datavalue.b);
-    }
-    if(strcmp(three->type,"integer")==0){                                        
-      if(three->datavalue.i != NULL) free(three->datavalue.i);
-    }
-    else{
-      if(three->datavalue.b != NULL) free(three->datavalue.b);
-    }  
-    free(one);
-    free(three);
+    free_node(one);
+    free_node(three);
 
     return node;
 }
@@ -458,6 +411,20 @@ struct vnode* operate_int_bool(struct vnode* one, struct vnode* three, char op[]
 }
 
 
+
+//----------FREEING A NODE------------------
+
+void free_node(struct vnode* node)
+{
+  if(node != NULL){
+   if(strcmp(node->type,"integer")==0)
+   {if(node->datavalue.i != NULL) free(node->datavalue.i);}
+   else{if(node->datavalue.b != NULL) free(node->datavalue.b);}
+
+   free(node); 
+  }
+    
+}
 
 
 //-----------------------
