@@ -110,7 +110,7 @@ assignment : ID '=' expr ';'        {
                                         exit(1);
                                       }                                      
                                      
-                                      if(strcmp($1->type,"integer")==0)
+                                      if(strcmp(symboltable[i]->type,"integer")==0)
                                         symboltable[i]->datavalue.i = $3->datavalue.i;
                                       else
                                         symboltable[i]->datavalue.b = $3->datavalue.b;
