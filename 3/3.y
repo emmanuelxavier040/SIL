@@ -90,14 +90,25 @@ dlist : dstatement dlist
       | dstatement                   { }                
       ;
 
-dstatement : INTEGER ID ';'   {   
+dstatement : INTEGER ID ';'   {         
+                                        int i = checkpresent($2);
+                                        if(i<ind){
+                                          printf("%s ALREADY DECLARED\n",$2->name);
+                                          exit(1);
+                                        }
+
                                         symboltable[ind] = $2;                                        
                                         strcpy(symboltable[ind]->type,"integer");                                        
                                         symboltable[ind]->size = 1;
                                         *(symboltable[ind]->datavalue.i) = 0; 
                                         ind++;                                       
                               }
-           | BOOLEAN ID ';'   { 
+           | BOOLEAN ID ';'   {         int i = checkpresent($2);
+                                        if(i<ind){
+                                          printf("%s ALREADY DECLARED\n",$2->name);
+                                          exit(1);
+                                        }
+
                                         symboltable[ind] = $2;
                                         strcpy(symboltable[ind]->type,"boolean");
                                         symboltable[ind]->size = 1;
@@ -105,6 +116,11 @@ dstatement : INTEGER ID ';'   {
                                         ind++;
                               }
            | INTEGER ID '[' expr ']' ';'     {                                                                    
+                                              int i = checkpresent($2);
+                                              if(i<ind){
+                                                printf("%s ALREADY DECLARED\n",$2->name);
+                                                exit(1);
+                                              }
 
                                               symboltable[ind] = $2;                                        
                                               strcpy(symboltable[ind]->type,"integer");                                        
@@ -112,18 +128,27 @@ dstatement : INTEGER ID ';'   {
                                               
 
                                               free(symboltable[ind]->datavalue.i);
+                                              symboltable[ind]->datavalue.i = NULL;
+
                                               symboltable[ind]->datavalue.i = (int*)malloc(symboltable[ind]->size * sizeof(int));
                                               memset(symboltable[ind]->datavalue.i,0,symboltable[ind]->size);                                            
                                               ind++;
 
                                              }
            | BOOLEAN ID '[' expr ']' ';'     {
-
+                                              int i = checkpresent($2);
+                                              if(i<ind){
+                                                printf("%s ALREADY DECLARED\n",$2->name);
+                                                exit(1);
+                                              }
+                                              
                                               symboltable[ind] = $2;                                        
                                               strcpy(symboltable[ind]->type,"boolean");                                        
                                               symboltable[ind]->size = *($4->datavalue.i);
                                               
                                               free(symboltable[ind]->datavalue.b);
+                                              symboltable[ind]->datavalue.b = NULL;
+
                                               symboltable[ind]->datavalue.b = (bool*)malloc(symboltable[ind]->size * sizeof(bool));
                                               memset(symboltable[ind]->datavalue.b,false,symboltable[ind]->size);                                            
                                               ind++;
@@ -145,6 +170,13 @@ statement : assignment              { }
 
 assignment : ID '=' expr ';'        {                                      
                                       int i = checkpresent($1);
+                                      if(i>=ind){
+                                        printf("%s UNDECLARED\n",$1->name);
+                                        exit(1);
+                                      }
+
+                                      
+
                                       if(strcmp(symboltable[i]->type,$3->type)!=0){
                                         printf("TYPE ERROR %s %s\n",symboltable[i]->type,$3->type);
                                         exit(1);
@@ -170,6 +202,11 @@ assignment : ID '=' expr ';'        {
 
            | ID '[' expr ']' '=' expr ';'        {
                                                   int i = checkpresent($1);
+                                                  if(i>=ind){
+                                                    printf("%s UNDECLARED\n",$1->name);
+                                                    exit(1);
+                                                  }
+
                                                   if(strcmp(symboltable[i]->type,$6->type)!=0){
                                                     printf("TYPE ERROR %s %s\n",symboltable[i]->type,$6->type);
                                                     exit(1);
@@ -213,7 +250,12 @@ expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
  
      | '(' expr ')'              { $$ = $2;}
      | ID                        {                                   
-                                    int i = checkpresent($1);                                  
+                                    int i = checkpresent($1);
+                                    if(i>=ind){
+                                      printf("%s UNDECLARED\n",$1->name);
+                                      exit(1);
+                                    }          
+
                                     strcpy($1->type,symboltable[i]->type);
                                     if(strcmp($1->type,"integer")==0)
                                       *($1->datavalue.i) = *(symboltable[i]->datavalue.i);
@@ -225,7 +267,12 @@ expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
 
      | ID '[' expr ']'            {
                                 
-                                    int i = checkpresent($1);                                  
+                                    int i = checkpresent($1);
+                                    if(i>=ind){
+                                      printf("%s UNDECLARED\n",$1->name);
+                                      exit(1);
+                                    }             
+
                                     strcpy($1->type,symboltable[i]->type);
 
                                      if(strcmp(symboltable[i]->type,"integer")==0)                                       
@@ -443,11 +490,6 @@ int checkpresent(struct vnode* A)
     for(i=0;i<ind;i++)
       if(strcmp(symboltable[i]->name,A->name)==0)
         break;
-    
-    if(i>=ind){
-      printf("%s UNDECLARED\n",A->name);
-      exit(1);
-    }
 
     return i;
 }

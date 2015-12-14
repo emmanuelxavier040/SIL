@@ -493,12 +493,12 @@ static const yytype_uint8 yytranslate[] =
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
-       0,    64,    64,    86,    89,    90,    93,   100,   107,   120,
-     134,   137,   138,   141,   142,   143,   146,   171,   199,   200,
-     201,   202,   203,   204,   205,   206,   208,   209,   210,   211,
-     212,   214,   215,   226,   241,   244,   249,   250,   253
+       0,    64,    64,    86,    89,    90,    93,   106,   118,   138,
+     159,   162,   163,   166,   167,   168,   171,   203,   236,   237,
+     238,   239,   240,   241,   242,   243,   245,   246,   247,   248,
+     249,   251,   252,   268,   288,   291,   296,   297,   300
 };
 #endif
 
@@ -1394,31 +1394,47 @@ yyreduce:
 
   case 6:
 #line 93 "3.y" /* yacc.c:1646  */
-    {   
+    {         
+                                        int i = checkpresent((yyvsp[-1]));
+                                        if(i<ind){
+                                          printf("%s ALREADY DECLARED\n",(yyvsp[-1])->name);
+                                          exit(1);
+                                        }
+
                                         symboltable[ind] = (yyvsp[-1]);                                        
                                         strcpy(symboltable[ind]->type,"integer");                                        
                                         symboltable[ind]->size = 1;
                                         *(symboltable[ind]->datavalue.i) = 0; 
                                         ind++;                                       
                               }
-#line 1405 "y.tab.c" /* yacc.c:1646  */
+#line 1411 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 100 "3.y" /* yacc.c:1646  */
-    { 
+#line 106 "3.y" /* yacc.c:1646  */
+    {         int i = checkpresent((yyvsp[-1]));
+                                        if(i<ind){
+                                          printf("%s ALREADY DECLARED\n",(yyvsp[-1])->name);
+                                          exit(1);
+                                        }
+
                                         symboltable[ind] = (yyvsp[-1]);
                                         strcpy(symboltable[ind]->type,"boolean");
                                         symboltable[ind]->size = 1;
                                         *(symboltable[ind]->datavalue.b) = false;                                        
                                         ind++;
                               }
-#line 1417 "y.tab.c" /* yacc.c:1646  */
+#line 1428 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 107 "3.y" /* yacc.c:1646  */
+#line 118 "3.y" /* yacc.c:1646  */
     {                                                                    
+                                              int i = checkpresent((yyvsp[-4]));
+                                              if(i<ind){
+                                                printf("%s ALREADY DECLARED\n",(yyvsp[-4])->name);
+                                                exit(1);
+                                              }
 
                                               symboltable[ind] = (yyvsp[-4]);                                        
                                               strcpy(symboltable[ind]->type,"integer");                                        
@@ -1426,53 +1442,69 @@ yyreduce:
                                               
 
                                               free(symboltable[ind]->datavalue.i);
+                                              symboltable[ind]->datavalue.i = NULL;
+
                                               symboltable[ind]->datavalue.i = (int*)malloc(symboltable[ind]->size * sizeof(int));
                                               memset(symboltable[ind]->datavalue.i,0,symboltable[ind]->size);                                            
                                               ind++;
 
                                              }
-#line 1435 "y.tab.c" /* yacc.c:1646  */
+#line 1453 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 120 "3.y" /* yacc.c:1646  */
+#line 138 "3.y" /* yacc.c:1646  */
     {
-
+                                              int i = checkpresent((yyvsp[-4]));
+                                              if(i<ind){
+                                                printf("%s ALREADY DECLARED\n",(yyvsp[-4])->name);
+                                                exit(1);
+                                              }
+                                              
                                               symboltable[ind] = (yyvsp[-4]);                                        
                                               strcpy(symboltable[ind]->type,"boolean");                                        
                                               symboltable[ind]->size = *((yyvsp[-2])->datavalue.i);
                                               
                                               free(symboltable[ind]->datavalue.b);
+                                              symboltable[ind]->datavalue.b = NULL;
+
                                               symboltable[ind]->datavalue.b = (bool*)malloc(symboltable[ind]->size * sizeof(bool));
                                               memset(symboltable[ind]->datavalue.b,false,symboltable[ind]->size);                                            
                                               ind++;
 
                                              }
-#line 1452 "y.tab.c" /* yacc.c:1646  */
+#line 1477 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 134 "3.y" /* yacc.c:1646  */
+#line 159 "3.y" /* yacc.c:1646  */
     { }
-#line 1458 "y.tab.c" /* yacc.c:1646  */
+#line 1483 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 138 "3.y" /* yacc.c:1646  */
+#line 163 "3.y" /* yacc.c:1646  */
     { }
-#line 1464 "y.tab.c" /* yacc.c:1646  */
+#line 1489 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 141 "3.y" /* yacc.c:1646  */
+#line 166 "3.y" /* yacc.c:1646  */
     { }
-#line 1470 "y.tab.c" /* yacc.c:1646  */
+#line 1495 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 146 "3.y" /* yacc.c:1646  */
+#line 171 "3.y" /* yacc.c:1646  */
     {                                      
                                       int i = checkpresent((yyvsp[-3]));
+                                      if(i>=ind){
+                                        printf("%s UNDECLARED\n",(yyvsp[-3])->name);
+                                        exit(1);
+                                      }
+
+                                      
+
                                       if(strcmp(symboltable[i]->type,(yyvsp[-1])->type)!=0){
                                         printf("TYPE ERROR %s %s\n",symboltable[i]->type,(yyvsp[-1])->type);
                                         exit(1);
@@ -1495,13 +1527,18 @@ yyreduce:
                                       free_node((yyvsp[-1]));
 
                                     }
-#line 1499 "y.tab.c" /* yacc.c:1646  */
+#line 1531 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 171 "3.y" /* yacc.c:1646  */
+#line 203 "3.y" /* yacc.c:1646  */
     {
                                                   int i = checkpresent((yyvsp[-6]));
+                                                  if(i>=ind){
+                                                    printf("%s UNDECLARED\n",(yyvsp[-6])->name);
+                                                    exit(1);
+                                                  }
+
                                                   if(strcmp(symboltable[i]->type,(yyvsp[-1])->type)!=0){
                                                     printf("TYPE ERROR %s %s\n",symboltable[i]->type,(yyvsp[-1])->type);
                                                     exit(1);
@@ -1524,97 +1561,102 @@ yyreduce:
                                                   free_node((yyvsp[-4]));
                                                   free_node((yyvsp[-1]));
                                                 }
-#line 1528 "y.tab.c" /* yacc.c:1646  */
+#line 1565 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 199 "3.y" /* yacc.c:1646  */
+#line 236 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"+"); }
-#line 1534 "y.tab.c" /* yacc.c:1646  */
+#line 1571 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 200 "3.y" /* yacc.c:1646  */
+#line 237 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"-"); }
-#line 1540 "y.tab.c" /* yacc.c:1646  */
+#line 1577 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 201 "3.y" /* yacc.c:1646  */
+#line 238 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"*"); }
-#line 1546 "y.tab.c" /* yacc.c:1646  */
+#line 1583 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 202 "3.y" /* yacc.c:1646  */
+#line 239 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"/"); }
-#line 1552 "y.tab.c" /* yacc.c:1646  */
+#line 1589 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 203 "3.y" /* yacc.c:1646  */
+#line 240 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<=");}
-#line 1558 "y.tab.c" /* yacc.c:1646  */
+#line 1595 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 204 "3.y" /* yacc.c:1646  */
+#line 241 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">=");}
-#line 1564 "y.tab.c" /* yacc.c:1646  */
+#line 1601 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 205 "3.y" /* yacc.c:1646  */
+#line 242 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<");}
-#line 1570 "y.tab.c" /* yacc.c:1646  */
+#line 1607 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 206 "3.y" /* yacc.c:1646  */
+#line 243 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">");}
-#line 1576 "y.tab.c" /* yacc.c:1646  */
+#line 1613 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 208 "3.y" /* yacc.c:1646  */
+#line 245 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"==");}
-#line 1582 "y.tab.c" /* yacc.c:1646  */
+#line 1619 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 209 "3.y" /* yacc.c:1646  */
+#line 246 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"!=");}
-#line 1588 "y.tab.c" /* yacc.c:1646  */
+#line 1625 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 210 "3.y" /* yacc.c:1646  */
+#line 247 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"&&");}
-#line 1594 "y.tab.c" /* yacc.c:1646  */
+#line 1631 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 211 "3.y" /* yacc.c:1646  */
+#line 248 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"||");}
-#line 1600 "y.tab.c" /* yacc.c:1646  */
+#line 1637 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 212 "3.y" /* yacc.c:1646  */
+#line 249 "3.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[0]),(yyvsp[0]),"!");}
-#line 1606 "y.tab.c" /* yacc.c:1646  */
+#line 1643 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 214 "3.y" /* yacc.c:1646  */
+#line 251 "3.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[-1]);}
-#line 1612 "y.tab.c" /* yacc.c:1646  */
+#line 1649 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 215 "3.y" /* yacc.c:1646  */
+#line 252 "3.y" /* yacc.c:1646  */
     {                                   
-                                    int i = checkpresent((yyvsp[0]));                                  
+                                    int i = checkpresent((yyvsp[0]));
+                                    if(i>=ind){
+                                      printf("%s UNDECLARED\n",(yyvsp[0])->name);
+                                      exit(1);
+                                    }          
+
                                     strcpy((yyvsp[0])->type,symboltable[i]->type);
                                     if(strcmp((yyvsp[0])->type,"integer")==0)
                                       *((yyvsp[0])->datavalue.i) = *(symboltable[i]->datavalue.i);
@@ -1623,14 +1665,19 @@ yyreduce:
 
                                     (yyval)=(yyvsp[0]);
                                   }
-#line 1627 "y.tab.c" /* yacc.c:1646  */
+#line 1669 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 226 "3.y" /* yacc.c:1646  */
+#line 268 "3.y" /* yacc.c:1646  */
     {
                                 
-                                    int i = checkpresent((yyvsp[-3]));                                  
+                                    int i = checkpresent((yyvsp[-3]));
+                                    if(i>=ind){
+                                      printf("%s UNDECLARED\n",(yyvsp[-3])->name);
+                                      exit(1);
+                                    }             
+
                                     strcpy((yyvsp[-3])->type,symboltable[i]->type);
 
                                      if(strcmp(symboltable[i]->type,"integer")==0)                                       
@@ -1642,33 +1689,33 @@ yyreduce:
 
                                     free_node((yyvsp[-1]));
                                   }
-#line 1646 "y.tab.c" /* yacc.c:1646  */
+#line 1693 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 241 "3.y" /* yacc.c:1646  */
+#line 288 "3.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);
                                   }
-#line 1654 "y.tab.c" /* yacc.c:1646  */
+#line 1701 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 244 "3.y" /* yacc.c:1646  */
+#line 291 "3.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);
                                   }
-#line 1662 "y.tab.c" /* yacc.c:1646  */
+#line 1709 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 249 "3.y" /* yacc.c:1646  */
+#line 296 "3.y" /* yacc.c:1646  */
     {if(*((yyvsp[-4])->datavalue.b) == false){printf("condition false\n");}}
-#line 1668 "y.tab.c" /* yacc.c:1646  */
+#line 1715 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1672 "y.tab.c" /* yacc.c:1646  */
+#line 1719 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1896,7 +1943,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 256 "3.y" /* yacc.c:1906  */
+#line 303 "3.y" /* yacc.c:1906  */
 
 
 
@@ -2087,11 +2134,6 @@ int checkpresent(struct vnode* A)
     for(i=0;i<ind;i++)
       if(strcmp(symboltable[i]->name,A->name)==0)
         break;
-    
-    if(i>=ind){
-      printf("%s UNDECLARED\n",A->name);
-      exit(1);
-    }
 
     return i;
 }
