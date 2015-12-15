@@ -99,7 +99,7 @@ dstatement : INTEGER ID ';'   {
 
                                         symboltable[ind] = $2;                                        
                                         strcpy(symboltable[ind]->type,"integer");                                        
-                                        symboltable[ind]->size = 1;
+                                        symboltable[ind]->size = 0;
                                         *(symboltable[ind]->datavalue.i) = 0; 
                                         ind++;                                       
                               }
@@ -111,22 +111,26 @@ dstatement : INTEGER ID ';'   {
 
                                         symboltable[ind] = $2;
                                         strcpy(symboltable[ind]->type,"boolean");
-                                        symboltable[ind]->size = 1;
+                                        symboltable[ind]->size = 0;
                                         *(symboltable[ind]->datavalue.b) = false;                                        
                                         ind++;
                               }
-           | INTEGER ID '[' expr ']' ';'     {                                                                                                
+           | INTEGER ID '[' expr ']' ';'     {                                                                    
                                               int i = checkpresent($2);
                                               if(i<ind){
                                                 printf("%s ALREADY DECLARED\n",$2->name);
                                                 exit(1);
                                               }
 
+                                              if((strcmp($4->type,"integer") != 0)||(*($4->datavalue.i) <= 0)){
+                                                printf("SIZE MUST BE A POSITIVE INTEGER\n");
+                                                exit(1); 
+                                              }
+
                                               symboltable[ind] = $2;                                        
                                               strcpy(symboltable[ind]->type,"integer");                                        
                                               symboltable[ind]->size = *($4->datavalue.i);
                                               
-
                                               free(symboltable[ind]->datavalue.i);
                                               symboltable[ind]->datavalue.i = NULL;
 
@@ -141,7 +145,12 @@ dstatement : INTEGER ID ';'   {
                                                 printf("%s ALREADY DECLARED\n",$2->name);
                                                 exit(1);
                                               }
-                                              
+
+                                              if((strcmp($4->type,"integer") != 0)||(*($4->datavalue.i) <= 0)){
+                                                printf("SIZE MUST BE A POSITIVE INTEGER\n");
+                                                exit(1); 
+                                              }
+
                                               symboltable[ind] = $2;                                        
                                               strcpy(symboltable[ind]->type,"boolean");                                        
                                               symboltable[ind]->size = *($4->datavalue.i);
@@ -175,15 +184,14 @@ assignment : ID '=' expr ';'        {
                                         exit(1);
                                       }
 
-                                      
 
                                       if(strcmp(symboltable[i]->type,$3->type)!=0){
                                         printf("TYPE ERROR %s %s\n",symboltable[i]->type,$3->type);
                                         exit(1);
                                       }                             
 
-                                      if(symboltable[i]->size > 1){
-                                        printf("ILLEGAL ACCESS\n");
+                                      if(symboltable[i]->size != 0){
+                                        printf("%s IS AN ARRAY\n",symboltable[i]->name);
                                         exit(1);
                                       }
 
@@ -206,16 +214,21 @@ assignment : ID '=' expr ';'        {
                                                     printf("%s UNDECLARED\n",$1->name);
                                                     exit(1);
                                                   }
+                                                  
+                                                  if((symboltable[i]->size == 0)||(*($3->datavalue.i) < 0)||(symboltable[i]->size <= *($3->datavalue.i))){
+                                                    printf("ILLEGAL ACCESS\n");
+                                                    exit(1);
+                                                  }
+
+                                                  if((strcmp($3->type,"integer") != 0)||(*($3->datavalue.i) < 0)){
+                                                    printf("SIZE MUST BE A POSITIVE INTEGER\n");
+                                                    exit(1); 
+                                                  }
 
                                                   if(strcmp(symboltable[i]->type,$6->type)!=0){
                                                     printf("TYPE ERROR %s %s\n",symboltable[i]->type,$6->type);
                                                     exit(1);
-                                                  }
-
-                                                  if(symboltable[i]->size == 1){
-                                                    printf("ILLEGAL ACCESS\n");
-                                                    exit(1);
-                                                  }
+                                                  }                                                  
 
                                                   if(strcmp(symboltable[i]->type,"integer")==0){                                        
                                                     *(symboltable[i]->datavalue.i + *($3->datavalue.i)) = *($6->datavalue.i);
@@ -244,20 +257,26 @@ expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
 
      | expr EQEQ expr            {  $$ = operate_int_bool($1,$3,"==");}
      | expr NOTEQ expr           {  $$ = operate_int_bool($1,$3,"!=");}
+
      | expr AND expr             {  $$ = operate_int_bool($1,$3,"&&");}
      | expr OR expr              {  $$ = operate_int_bool($1,$3,"||");}
      | NOT expr                  {  $$ = operate_int_bool($2,$2,"!");}
  
      | '(' expr ')'              { $$ = $2;}
-     | ID                        {       
-                                    printf("yes\n");                            
+     | ID                        {                                                                    
                                     int i = checkpresent($1);
                                     if(i>=ind){
                                       printf("%s UNDECLARED\n",$1->name);
                                       exit(1);
-                                    }          
-
-                                    strcpy($1->type,symboltable[i]->type);
+                                    }
+                                    
+                                    if(symboltable[i]->size != 0){
+                                      printf("%s IS AN ARRAY\n",$1->name);
+                                      exit(1);
+                                    }
+                                    
+                                    strcpy($1->type,symboltable[i]->type); 
+                                                                       
                                     if(strcmp($1->type,"integer")==0)
                                       *($1->datavalue.i) = *(symboltable[i]->datavalue.i);
                                     else
@@ -274,19 +293,28 @@ expr : expr '+' expr             {  $$ = operate_int($1,$3,"+"); }
                                       exit(1);
                                     }             
 
+                                    if((symboltable[i]->size == 0)||(*($3->datavalue.i) < 0)||(*($3->datavalue.i) >= symboltable[i]->size)){
+                                      printf("ILLEGAL ACCESS\n");
+                                      exit(1);
+                                    }
+                                    
+                                    if(strcmp($3->type,"integer") != 0){
+                                      printf("TYPE ERROR\n");
+                                      exit(1); 
+                                    }
+
                                     strcpy($1->type,symboltable[i]->type);
 
-                                     if(strcmp(symboltable[i]->type,"integer")==0)                                       
-                                       *($1->datavalue.i) = *(symboltable[i]->datavalue.i + *($3->datavalue.i));                                     
-                                     else
-                                       *($1->datavalue.b) = *(symboltable[i]->datavalue.b + *($3->datavalue.i));
+                                    if(strcmp(symboltable[i]->type,"integer")==0)                                       
+                                      *($1->datavalue.i) = *(symboltable[i]->datavalue.i + *($3->datavalue.i));                                     
+                                    else
+                                      *($1->datavalue.b) = *(symboltable[i]->datavalue.b + *($3->datavalue.i));
 
                                     $$=$1;                                  
-
                                     free_node($3);
                                   }
 
-     | NUM                        {
+     | NUM                        {                                    
                                     $$ = $1;
                                   }
      | BOOL                       {
