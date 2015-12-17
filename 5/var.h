@@ -11,18 +11,16 @@ struct vnode{
 };
 
 
-#define YYSTYPE struct vnode*
-
-
-
-
 struct Tnode {
 		char name[30];
 		char type[30];
-		int nodetype;		
+		int nodetype;	//
+		int size;
 		union store datavalue; 
 		struct Tnode *Ptr1, *Ptr2, *Ptr3;
-		struct vnode *Gentry; 		
+		int symtabindex;		
 };
+
+#define YYSTYPE struct Tnode*
 
 struct Tnode *TreeCreate(char name[], char type[], int nodetype, int VALUE, struct Tnode* Ptr1, struct Tnode* Ptr2, struct Tnode* Ptr3);

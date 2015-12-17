@@ -11,6 +11,7 @@
     int ind = 0;
     struct vnode* symboltable[100];
     struct vnode* ptr;
+    
 
     struct vnode* operate_int(struct vnode*, struct vnode*, char*);
     struct vnode* operate_int_bool(struct vnode*, struct vnode*, char*);
@@ -67,8 +68,12 @@ program : programdecl body          {
                                           printf("%s %s %d\n",symboltable[j]->name, symboltable[j]->type,symboltable[j]->size);
                                           printf("Values\n");
 
-                                          int i=0;
-                                          for(i=0;i<symboltable[j]->size;i++)
+                                          int i=0,length;
+                                          if(symboltable[j]->size == 0)
+                                            length=1;
+                                          else
+                                            length = symboltable[j]->size;
+                                          for(i=0;i<length;i++)
                                             if(strcmp(symboltable[j]->type,"integer")==0)
                                               printf("%d ",(symboltable[j]->datavalue.i)[i]);
                                             else
@@ -86,7 +91,7 @@ program : programdecl body          {
 programdecl : DECL dlist ENDDECL     { }
             ;
 
-dlist : dstatement dlist                
+dlist : dstatement dlist             { }  
       | dstatement                   { }                
       ;
 
@@ -101,7 +106,9 @@ dstatement : INTEGER ID ';'   {
                                         strcpy(symboltable[ind]->type,"integer");                                        
                                         symboltable[ind]->size = 0;
                                         *(symboltable[ind]->datavalue.i) = 0; 
-                                        ind++;                                       
+                                        ind++;
+
+
                               }
            | BOOLEAN ID ';'   {         int i = checkpresent($2);
                                         if(i<ind){

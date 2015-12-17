@@ -62,7 +62,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "4.y" /* yacc.c:339  */
+#line 1 "5.y" /* yacc.c:339  */
 
 
     #include <stdio.h>
@@ -71,19 +71,21 @@
     #include <stdbool.h>
     #include "var.h"
 
-    #define YYSTYPE struct vnode*
+    #define YYSTYPE struct Tnode*
 
     int ind = 0;
     struct vnode* symboltable[100];
     struct vnode* ptr;
-    
+    struct Tnode* treenode;
 
-    struct vnode* operate_int(struct vnode*, struct vnode*, char*);
-    struct vnode* operate_int_bool(struct vnode*, struct vnode*, char*);
-    void free_node(struct vnode*);
+    struct Tnode* operate_int(struct Tnode*, struct Tnode*, char*);
+    struct Tnode* operate_int_bool(struct Tnode*, struct Tnode*, char*);    
+    void free_node(struct Tnode*);
+    int astree(struct Tnode* nd);
+    void show_symboltable();
 
 
-#line 87 "y.tab.c" /* yacc.c:339  */
+#line 89 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -137,16 +139,23 @@ extern int yydebug;
     READ = 274,
     WRITE = 275,
     RETURN = 276,
-    EQ = 277,
-    NOTEQ = 278,
-    EQEQ = 279,
-    AND = 280,
-    OR = 281,
-    NOT = 282,
-    LSEQ = 283,
-    GREQ = 284,
-    LSTHAN = 285,
-    GRTHAN = 286
+    STATEMENTLIST = 277,
+    EQUALTO = 278,
+    PLUS = 279,
+    MINUS = 280,
+    MUL = 281,
+    DIV = 282,
+    MOD = 283,
+    EQ = 284,
+    NOTEQ = 285,
+    EQEQ = 286,
+    AND = 287,
+    OR = 288,
+    NOT = 289,
+    LSEQ = 290,
+    GREQ = 291,
+    LSTHAN = 292,
+    GRTHAN = 293
   };
 #endif
 /* Tokens.  */
@@ -169,16 +178,23 @@ extern int yydebug;
 #define READ 274
 #define WRITE 275
 #define RETURN 276
-#define EQ 277
-#define NOTEQ 278
-#define EQEQ 279
-#define AND 280
-#define OR 281
-#define NOT 282
-#define LSEQ 283
-#define GREQ 284
-#define LSTHAN 285
-#define GRTHAN 286
+#define STATEMENTLIST 277
+#define EQUALTO 278
+#define PLUS 279
+#define MINUS 280
+#define MUL 281
+#define DIV 282
+#define MOD 283
+#define EQ 284
+#define NOTEQ 285
+#define EQEQ 286
+#define AND 287
+#define OR 288
+#define NOT 289
+#define LSEQ 290
+#define GREQ 291
+#define LSTHAN 292
+#define GRTHAN 293
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -196,7 +212,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 200 "y.tab.c" /* yacc.c:358  */
+#line 216 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -438,21 +454,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  8
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   245
+#define YYLAST   284
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  42
+#define YYNTOKENS  50
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  12
+#define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  38
+#define YYNRULES  44
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  93
+#define YYNSTATES  112
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   286
+#define YYMAXUTOK   293
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -464,13 +480,13 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,    41,     2,     2,
+      47,    48,    42,    39,     2,    40,     2,    43,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    44,
+       2,    49,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      40,    41,    34,    32,     2,    33,     2,    35,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    36,
-       2,    39,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    37,     2,    38,     2,     2,     2,     2,     2,     2,
+       2,    45,     2,    46,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -489,17 +505,19 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    65,    65,    91,    94,    95,    98,   113,   125,   149,
-     175,   178,   179,   182,   183,   184,   187,   218,   256,   257,
-     258,   259,   260,   261,   262,   263,   265,   266,   268,   269,
-     270,   272,   273,   295,   324,   327,   332,   333,   336
+       0,    79,    79,    88,    91,    92,    95,   120,   142,   171,
+     201,   204,   210,   217,   218,   219,   220,   221,   224,   244,
+     276,   284,   314,   352,   353,   354,   355,   356,   357,   358,
+     359,   360,   362,   363,   365,   366,   367,   369,   370,   388,
+     419,   422,   427,   440,   455
 };
 #endif
 
@@ -510,11 +528,12 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "ID", "NUM", "BOOL", "BEGN", "END",
   "DECL", "ENDDECL", "INTEGER", "BOOLEAN", "IF", "THEN", "ENDIF", "ELSE",
-  "WHILE", "DO", "ENDWHILE", "READ", "WRITE", "RETURN", "EQ", "NOTEQ",
-  "EQEQ", "AND", "OR", "NOT", "LSEQ", "GREQ", "LSTHAN", "GRTHAN", "'+'",
-  "'-'", "'*'", "'/'", "';'", "'['", "']'", "'='", "'('", "')'", "$accept",
+  "WHILE", "DO", "ENDWHILE", "READ", "WRITE", "RETURN", "STATEMENTLIST",
+  "EQUALTO", "PLUS", "MINUS", "MUL", "DIV", "MOD", "EQ", "NOTEQ", "EQEQ",
+  "AND", "OR", "NOT", "LSEQ", "GREQ", "LSTHAN", "GRTHAN", "'+'", "'-'",
+  "'%'", "'*'", "'/'", "';'", "'['", "']'", "'('", "')'", "'='", "$accept",
   "program", "programdecl", "dlist", "dstatement", "body", "statementlist",
-  "statement", "assignment", "expr", "condition", "loop", YY_NULLPTR
+  "statement", "read", "write", "assignment", "expr", "condition", "loop", YY_NULLPTR
 };
 #endif
 
@@ -526,15 +545,15 @@ static const yytype_uint16 yytoknum[] =
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,    43,    45,    42,    47,    59,    91,    93,    61,
-      40,    41
+     285,   286,   287,   288,   289,   290,   291,   292,   293,    43,
+      45,    37,    42,    47,    59,    91,    93,    40,    41,    61
 };
 # endif
 
-#define YYPACT_NINF -41
+#define YYPACT_NINF -30
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-41)))
+  (!!((Yystate) == (-30)))
 
 #define YYTABLE_NINF -1
 
@@ -545,16 +564,18 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      -5,    -4,    22,     3,    10,    45,    43,    -4,   -41,    12,
-     -41,     9,    13,   -41,   -41,   -35,    16,    16,   206,   -41,
-     -41,   -41,   -41,   -41,    16,   -41,    16,    16,    16,   -12,
-     -41,   -41,    16,    16,    48,    67,   -41,   -41,    94,   110,
-     126,   158,    16,   -41,    80,    12,    16,    16,    16,    16,
-      16,    16,    16,    16,    16,    16,    16,    16,    12,    23,
-      26,    36,   -41,   142,   -41,    39,    38,    38,    59,   -41,
-     186,   186,    32,    32,   201,   201,   214,   214,    11,   -41,
-     -41,    16,   -41,    50,    12,    51,   172,   -41,   207,   -41,
-     -41,    52,   -41
+       2,    17,    12,    -1,    14,    46,    25,    17,   -30,    13,
+     -30,    26,    44,   -30,   -30,   -19,    18,    18,     4,    45,
+      54,    13,   -30,   -30,   -30,   -30,   -30,   -30,    18,   -30,
+      18,    18,    18,    48,   -30,   -30,    18,    18,    43,    70,
+      92,    18,   -30,   -30,   112,   129,   146,   197,    18,   -30,
+      84,    13,    18,    18,    18,    18,    18,    18,    18,    18,
+      18,    18,    18,    18,    18,    13,     5,    98,    53,    55,
+      47,   -30,   163,   -30,    52,    22,    22,    65,   -30,    31,
+      31,    58,    58,   227,   227,   241,   -29,   -29,    86,    18,
+      74,   113,   -30,   -30,    18,   -30,   119,    13,   130,   180,
+     -30,   -30,   212,   -30,   142,   -30,   125,   -30,   136,   147,
+     -30,   -30
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -563,29 +584,31 @@ static const yytype_int16 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     0,     0,     0,     5,     1,     0,
-       2,     0,     0,     3,     4,     0,     0,     0,     0,    12,
-      13,    14,    15,     6,     0,     7,     0,     0,     0,    32,
-      34,    35,     0,     0,     0,     0,    10,    11,     0,     0,
-       0,     0,     0,    30,     0,     0,     0,     0,     0,     0,
+       2,     0,     0,     3,     4,     0,     0,     0,     0,     0,
+       0,    12,    16,    17,    13,    14,    15,     6,     0,     7,
+       0,     0,     0,    38,    40,    41,     0,     0,     0,     0,
+       0,     0,    10,    11,     0,     0,     0,     0,     0,    36,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,    16,     0,    31,     0,    27,    26,    28,    29,
-      22,    23,    24,    25,    18,    19,    20,    21,     0,     8,
-       9,     0,    33,     0,     0,     0,     0,    36,     0,    38,
-      17,     0,    37
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    21,     0,    37,     0,    33,    32,    34,    35,    28,
+      29,    30,    31,    23,    24,    27,    25,    26,     0,     0,
+       0,     0,     8,     9,     0,    39,     0,     0,     0,     0,
+      18,    20,     0,    42,     0,    44,     0,    22,     0,     0,
+      43,    19
 };
 
   /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -41,   -41,   -41,    82,   -41,   -41,   -40,   -18,   -41,   -16,
-     -41,   -41
+     -30,   -30,   -30,   183,   -30,   -30,    -3,   -30,   -30,   -30,
+     -30,   -17,   -30,   -30
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,     6,     7,    10,    18,    19,    20,    34,
-      21,    22
+      -1,     2,     3,     6,     7,    10,    20,    21,    22,    23,
+      24,    38,    25,    26
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -593,94 +616,106 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      37,    35,    27,     1,    28,    65,     4,     5,    38,     9,
-      39,    40,    41,    11,    15,    15,    43,    44,    78,    29,
-      30,    31,     8,    16,    16,    42,    63,    17,    17,    85,
-      66,    67,    68,    69,    70,    71,    72,    73,    74,    75,
-      76,    77,    15,    32,    88,    23,    24,    37,    12,    25,
-      26,    16,    13,    83,    84,    17,    33,    48,    49,    79,
-      37,    45,    80,    48,    49,    86,    50,    51,    52,    53,
-      37,    46,    47,    48,    49,    81,    50,    51,    52,    53,
-      54,    55,    56,    57,    58,    49,    87,    89,    92,    14,
-      46,    47,    48,    49,     0,    50,    51,    52,    53,    54,
-      55,    56,    57,    46,    47,    48,    49,     0,    50,    51,
-      52,    53,    54,    55,    56,    57,     0,    46,    47,    48,
-      49,    64,    50,    51,    52,    53,    54,    55,    56,    57,
-       0,     0,    59,    46,    47,    48,    49,     0,    50,    51,
-      52,    53,    54,    55,    56,    57,     0,     0,    60,    46,
-      47,    48,    49,     0,    50,    51,    52,    53,    54,    55,
-      56,    57,     0,     0,    61,    46,    47,    48,    49,     0,
-      50,    51,    52,    53,    54,    55,    56,    57,     0,     0,
-      82,    46,    47,    48,    49,     0,    50,    51,    52,    53,
-      54,    55,    56,    57,    62,    46,    47,    48,    49,     0,
-      50,    51,    52,    53,    54,    55,    56,    57,    90,    15,
-      15,    48,    49,    36,     0,     0,    52,    53,    16,    16,
-       0,    91,    17,    17,    46,    47,    48,    49,     0,    50,
-      51,    52,    53,     0,     0,    56,    57,    46,    47,    48,
-      49,     0,    50,    51,    52,    53
+      39,    52,    53,    54,    55,     9,    56,    57,    58,    59,
+       1,    44,     8,    45,    46,    47,    15,    11,    43,    49,
+      50,    33,    34,    35,    67,    16,    31,     4,     5,    17,
+      32,    72,    18,    19,    13,    75,    76,    77,    78,    79,
+      80,    81,    82,    83,    84,    85,    86,    87,    74,    12,
+      89,    40,    36,    90,    54,    55,    51,    56,    57,    58,
+      59,    42,    88,    54,    55,    37,    96,    97,    58,    59,
+      27,    28,    99,    52,    53,    54,    55,   102,    56,    57,
+      58,    59,    60,    61,    62,    63,    64,    65,    29,    30,
+      54,    55,    41,    48,   104,    66,    94,    92,    55,    93,
+      52,    53,    54,    55,    98,    56,    57,    58,    59,    60,
+      61,    62,    63,    64,    52,    53,    54,    55,   100,    56,
+      57,    58,    59,    60,    61,    62,    63,    64,    52,    53,
+      54,    55,    73,    56,    57,    58,    59,    60,    61,    62,
+      63,    64,    52,    53,    54,    55,    91,    56,    57,    58,
+      59,    60,    61,    62,    63,    64,   108,   101,    68,    52,
+      53,    54,    55,   103,    56,    57,    58,    59,    60,    61,
+      62,    63,    64,   109,   105,    69,    52,    53,    54,    55,
+     110,    56,    57,    58,    59,    60,    61,    62,    63,    64,
+      14,   111,    70,    52,    53,    54,    55,     0,    56,    57,
+      58,    59,    60,    61,    62,    63,    64,     0,     0,    95,
+      52,    53,    54,    55,     0,    56,    57,    58,    59,    60,
+      61,    62,    63,    64,     0,     0,   106,    52,    53,    54,
+      55,     0,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    71,    52,    53,    54,    55,     0,    56,    57,    58,
+      59,    60,    61,    62,    63,    64,   107,    52,    53,    54,
+      55,     0,    56,    57,    58,    59,     0,     0,    62,    63,
+      64,    52,    53,    54,    55,     0,    56,    57,    58,    59,
+       0,     0,     0,    63,    64
 };
 
 static const yytype_int8 yycheck[] =
 {
-      18,    17,    37,     8,    39,    45,    10,    11,    24,     6,
-      26,    27,    28,     3,     3,     3,    32,    33,    58,     3,
-       4,     5,     0,    12,    12,    37,    42,    16,    16,    18,
-      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
-      56,    57,     3,    27,    84,    36,    37,    65,     3,    36,
-      37,    12,     9,    14,    15,    16,    40,    25,    26,    36,
-      78,    13,    36,    25,    26,    81,    28,    29,    30,    31,
-      88,    23,    24,    25,    26,    39,    28,    29,    30,    31,
-      32,    33,    34,    35,    17,    26,    36,    36,    36,     7,
-      23,    24,    25,    26,    -1,    28,    29,    30,    31,    32,
-      33,    34,    35,    23,    24,    25,    26,    -1,    28,    29,
-      30,    31,    32,    33,    34,    35,    -1,    23,    24,    25,
-      26,    41,    28,    29,    30,    31,    32,    33,    34,    35,
-      -1,    -1,    38,    23,    24,    25,    26,    -1,    28,    29,
-      30,    31,    32,    33,    34,    35,    -1,    -1,    38,    23,
-      24,    25,    26,    -1,    28,    29,    30,    31,    32,    33,
-      34,    35,    -1,    -1,    38,    23,    24,    25,    26,    -1,
-      28,    29,    30,    31,    32,    33,    34,    35,    -1,    -1,
-      38,    23,    24,    25,    26,    -1,    28,    29,    30,    31,
-      32,    33,    34,    35,    36,    23,    24,    25,    26,    -1,
-      28,    29,    30,    31,    32,    33,    34,    35,    36,     3,
-       3,    25,    26,     7,    -1,    -1,    30,    31,    12,    12,
-      -1,    14,    16,    16,    23,    24,    25,    26,    -1,    28,
-      29,    30,    31,    -1,    -1,    34,    35,    23,    24,    25,
-      26,    -1,    28,    29,    30,    31
+      17,    30,    31,    32,    33,     6,    35,    36,    37,    38,
+       8,    28,     0,    30,    31,    32,     3,     3,    21,    36,
+      37,     3,     4,     5,    41,    12,    45,    10,    11,    16,
+      49,    48,    19,    20,     9,    52,    53,    54,    55,    56,
+      57,    58,    59,    60,    61,    62,    63,    64,    51,     3,
+      45,    47,    34,    48,    32,    33,    13,    35,    36,    37,
+      38,     7,    65,    32,    33,    47,    14,    15,    37,    38,
+      44,    45,    89,    30,    31,    32,    33,    94,    35,    36,
+      37,    38,    39,    40,    41,    42,    43,    17,    44,    45,
+      32,    33,    47,    45,    97,     3,    49,    44,    33,    44,
+      30,    31,    32,    33,    18,    35,    36,    37,    38,    39,
+      40,    41,    42,    43,    30,    31,    32,    33,    44,    35,
+      36,    37,    38,    39,    40,    41,    42,    43,    30,    31,
+      32,    33,    48,    35,    36,    37,    38,    39,    40,    41,
+      42,    43,    30,    31,    32,    33,    48,    35,    36,    37,
+      38,    39,    40,    41,    42,    43,    14,    44,    46,    30,
+      31,    32,    33,    44,    35,    36,    37,    38,    39,    40,
+      41,    42,    43,    48,    44,    46,    30,    31,    32,    33,
+      44,    35,    36,    37,    38,    39,    40,    41,    42,    43,
+       7,    44,    46,    30,    31,    32,    33,    -1,    35,    36,
+      37,    38,    39,    40,    41,    42,    43,    -1,    -1,    46,
+      30,    31,    32,    33,    -1,    35,    36,    37,    38,    39,
+      40,    41,    42,    43,    -1,    -1,    46,    30,    31,    32,
+      33,    -1,    35,    36,    37,    38,    39,    40,    41,    42,
+      43,    44,    30,    31,    32,    33,    -1,    35,    36,    37,
+      38,    39,    40,    41,    42,    43,    44,    30,    31,    32,
+      33,    -1,    35,    36,    37,    38,    -1,    -1,    41,    42,
+      43,    30,    31,    32,    33,    -1,    35,    36,    37,    38,
+      -1,    -1,    -1,    42,    43
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     8,    43,    44,    10,    11,    45,    46,     0,     6,
-      47,     3,     3,     9,    45,     3,    12,    16,    48,    49,
-      50,    52,    53,    36,    37,    36,    37,    37,    39,     3,
-       4,     5,    27,    40,    51,    51,     7,    49,    51,    51,
-      51,    51,    37,    51,    51,    13,    23,    24,    25,    26,
-      28,    29,    30,    31,    32,    33,    34,    35,    17,    38,
-      38,    38,    36,    51,    41,    48,    51,    51,    51,    51,
-      51,    51,    51,    51,    51,    51,    51,    51,    48,    36,
-      36,    39,    38,    14,    15,    18,    51,    36,    48,    36,
-      36,    14,    36
+       0,     8,    51,    52,    10,    11,    53,    54,     0,     6,
+      55,     3,     3,     9,    53,     3,    12,    16,    19,    20,
+      56,    57,    58,    59,    60,    62,    63,    44,    45,    44,
+      45,    45,    49,     3,     4,     5,    34,    47,    61,    61,
+      47,    47,     7,    56,    61,    61,    61,    61,    45,    61,
+      61,    13,    30,    31,    32,    33,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    17,     3,    61,    46,    46,
+      46,    44,    61,    48,    56,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    61,    56,    45,
+      48,    48,    44,    44,    49,    46,    14,    15,    18,    61,
+      44,    44,    61,    44,    56,    44,    46,    44,    14,    48,
+      44,    44
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    42,    43,    44,    45,    45,    46,    46,    46,    46,
-      47,    48,    48,    49,    49,    49,    50,    50,    51,    51,
-      51,    51,    51,    51,    51,    51,    51,    51,    51,    51,
-      51,    51,    51,    51,    51,    51,    52,    52,    53
+       0,    50,    51,    52,    53,    53,    54,    54,    54,    54,
+      55,    56,    56,    57,    57,    57,    57,    57,    58,    58,
+      59,    60,    60,    61,    61,    61,    61,    61,    61,    61,
+      61,    61,    61,    61,    61,    61,    61,    61,    61,    61,
+      61,    61,    62,    62,    63
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     2,     3,     2,     1,     3,     3,     6,     6,
-       3,     2,     1,     1,     1,     1,     4,     7,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       2,     3,     1,     4,     1,     1,     6,     8,     6
+       3,     2,     1,     1,     1,     1,     1,     1,     5,     8,
+       5,     4,     7,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     2,     3,     1,     4,
+       1,     1,     6,     8,     6
 };
 
 
@@ -1357,91 +1392,92 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 65 "4.y" /* yacc.c:1646  */
+#line 79 "5.y" /* yacc.c:1646  */
     {
-                                      int j=0;
-                                        for(j=0;j<ind;j++){
-                                          printf("%s %s %d\n",symboltable[j]->name, symboltable[j]->type,symboltable[j]->size);
-                                          printf("Values\n");
-
-                                          int i=0,length;
-                                          if(symboltable[j]->size == 0)
-                                            length=1;
-                                          else
-                                            length = symboltable[j]->size;
-                                          for(i=0;i<length;i++)
-                                            if(strcmp(symboltable[j]->type,"integer")==0)
-                                              printf("%d ",(symboltable[j]->datavalue.i)[i]);
-                                            else
-                                              printf("%d ",(symboltable[j]->datavalue.b)[i]);
-
-                                          printf("\n");
-
-                                        }
-    
-                                        printf("\nComplete\n");
-                                        exit(1);
+                                      (yyval) = (yyvsp[0]);                                      
+                                      int l = astree((yyval));
+                                      show_symboltable();
+                                      printf("\nComplete\n");
+                                      exit(1);
                                     }
-#line 1386 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 3:
-#line 91 "4.y" /* yacc.c:1646  */
-    { }
-#line 1392 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 4:
-#line 94 "4.y" /* yacc.c:1646  */
-    { }
-#line 1398 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 5:
-#line 95 "4.y" /* yacc.c:1646  */
-    { }
 #line 1404 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 3:
+#line 88 "5.y" /* yacc.c:1646  */
+    {  }
+#line 1410 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 91 "5.y" /* yacc.c:1646  */
+    {  }
+#line 1416 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 92 "5.y" /* yacc.c:1646  */
+    {  }
+#line 1422 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 6:
-#line 98 "4.y" /* yacc.c:1646  */
+#line 95 "5.y" /* yacc.c:1646  */
     {         
                                         int i = checkpresent((yyvsp[-1]));
                                         if(i<ind){
                                           printf("%s ALREADY DECLARED\n",(yyvsp[-1])->name);
                                           exit(1);
                                         }
+                                        
 
-                                        symboltable[ind] = (yyvsp[-1]);                                        
-                                        strcpy(symboltable[ind]->type,"integer");                                        
-                                        symboltable[ind]->size = 0;
+                                        ptr=(struct vnode *)malloc(sizeof(struct vnode)); 
+                                        ptr->datavalue.i = (int*)malloc(sizeof(int));
+                                        symboltable[ind] = ptr; 
+
+                                        strcpy(symboltable[ind]->name, (yyvsp[-1])->name);                                        
+                                        strcpy(symboltable[ind]->type,"integer");
                                         *(symboltable[ind]->datavalue.i) = 0; 
+                                        symboltable[ind]->size = 0;                                                                          
                                         ind++;
 
 
+                                        strcpy((yyvsp[-1])->type,"integer");
+                                        (yyval) = (yyvsp[-1]);
+                                        free_node((yyvsp[-2]));
+
                               }
-#line 1424 "y.tab.c" /* yacc.c:1646  */
+#line 1451 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 113 "4.y" /* yacc.c:1646  */
+#line 120 "5.y" /* yacc.c:1646  */
     {         int i = checkpresent((yyvsp[-1]));
                                         if(i<ind){
                                           printf("%s ALREADY DECLARED\n",(yyvsp[-1])->name);
                                           exit(1);
                                         }
 
-                                        symboltable[ind] = (yyvsp[-1]);
-                                        strcpy(symboltable[ind]->type,"boolean");
+
+                                        ptr=(struct vnode *)malloc(sizeof(struct vnode));                                         
+                                        ptr->datavalue.b = (bool*)malloc(sizeof(bool));
+                                        symboltable[ind] = ptr;
+                                        
+                                        strcpy(symboltable[ind]->name, (yyvsp[-1])->name);
+                                        strcpy(symboltable[ind]->type, "boolean");
                                         symboltable[ind]->size = 0;
                                         *(symboltable[ind]->datavalue.b) = false;                                        
                                         ind++;
+
+                                        strcpy((yyvsp[-1])->type,"boolean");
+                                        (yyval) = (yyvsp[-1]);
+                                        free_node((yyvsp[-1]));
                               }
-#line 1441 "y.tab.c" /* yacc.c:1646  */
+#line 1477 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 125 "4.y" /* yacc.c:1646  */
+#line 142 "5.y" /* yacc.c:1646  */
     {                                                                    
                                               int i = checkpresent((yyvsp[-4]));
                                               if(i<ind){
@@ -1454,23 +1490,28 @@ yyreduce:
                                                 exit(1); 
                                               }
 
-                                              symboltable[ind] = (yyvsp[-4]);                                        
-                                              strcpy(symboltable[ind]->type,"integer");                                        
-                                              symboltable[ind]->size = *((yyvsp[-2])->datavalue.i);
-                                              
-                                              free(symboltable[ind]->datavalue.i);
-                                              symboltable[ind]->datavalue.i = NULL;
 
-                                              symboltable[ind]->datavalue.i = (int*)malloc(symboltable[ind]->size * sizeof(int));
-                                              memset(symboltable[ind]->datavalue.i,0,symboltable[ind]->size);                                            
+
+                                              ptr=(struct vnode *)malloc(sizeof(struct vnode));
+                                              ptr->datavalue.i = (int*)malloc(*((yyvsp[-2])->datavalue.i) * sizeof(int));
+                                              ptr->size = *((yyvsp[-2])->datavalue.i);
+                                              memset(ptr->datavalue.i,0,ptr->size);
+                                              symboltable[ind] = ptr;                                              
+
+                                              strcpy(symboltable[ind]->name, (yyvsp[-4])->name);                                        
+                                              strcpy(symboltable[ind]->type,"integer");                                              
+
                                               ind++;
 
+                                              free_node((yyvsp[-4]));
+                                              free_node((yyvsp[-2]));
+
                                              }
-#line 1470 "y.tab.c" /* yacc.c:1646  */
+#line 1511 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 149 "4.y" /* yacc.c:1646  */
+#line 171 "5.y" /* yacc.c:1646  */
     {
                                               int i = checkpresent((yyvsp[-4]));
                                               if(i<ind){
@@ -1483,41 +1524,155 @@ yyreduce:
                                                 exit(1); 
                                               }
 
-                                              symboltable[ind] = (yyvsp[-4]);                                        
-                                              strcpy(symboltable[ind]->type,"boolean");                                        
-                                              symboltable[ind]->size = *((yyvsp[-2])->datavalue.i);
-                                              
-                                              free(symboltable[ind]->datavalue.b);
-                                              symboltable[ind]->datavalue.b = NULL;
 
-                                              symboltable[ind]->datavalue.b = (bool*)malloc(symboltable[ind]->size * sizeof(bool));
-                                              memset(symboltable[ind]->datavalue.b,false,symboltable[ind]->size);                                            
+                                              ptr=(struct vnode *)malloc(sizeof(struct vnode));
+                                              ptr->datavalue.b = (bool*)malloc(*((yyvsp[-2])->datavalue.i) * sizeof(bool));
+                                              ptr->size = *((yyvsp[-2])->datavalue.i);
+                                              memset(ptr->datavalue.b,0,ptr->size);
+                                              symboltable[ind] = ptr;
+
+                                              strcpy(symboltable[ind]->name, (yyvsp[-4])->name);                                        
+                                              strcpy(symboltable[ind]->type,"boolean");                                              
+
                                               ind++;
 
+                                              free_node((yyvsp[-4]));
+                                              free_node((yyvsp[-2]));
+                                              
                                              }
-#line 1499 "y.tab.c" /* yacc.c:1646  */
+#line 1544 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 175 "4.y" /* yacc.c:1646  */
-    { }
-#line 1505 "y.tab.c" /* yacc.c:1646  */
+#line 201 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]);}
+#line 1550 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 11:
+#line 204 "5.y" /* yacc.c:1646  */
+    { treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                          (yyval) = treenode;
+                                          (yyval)->nodetype = STATEMENTLIST;
+                                          (yyval)->Ptr1 = (yyvsp[-1]);
+                                          (yyval)->Ptr2 = (yyvsp[0]);
+                                        }
+#line 1561 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 179 "4.y" /* yacc.c:1646  */
-    { }
-#line 1511 "y.tab.c" /* yacc.c:1646  */
+#line 210 "5.y" /* yacc.c:1646  */
+    { treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                          (yyval) = treenode;
+                                          (yyval)->nodetype = STATEMENTLIST;
+                                          (yyval)->Ptr1 = (yyvsp[0]);
+                                        }
+#line 1571 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 182 "4.y" /* yacc.c:1646  */
-    { }
-#line 1517 "y.tab.c" /* yacc.c:1646  */
+#line 217 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]);}
+#line 1577 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 218 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]);}
+#line 1583 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 219 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]);}
+#line 1589 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 187 "4.y" /* yacc.c:1646  */
+#line 220 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]);}
+#line 1595 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 221 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]);}
+#line 1601 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 224 "5.y" /* yacc.c:1646  */
+    {   int i = checkpresent((yyvsp[-2]));
+                                                    if(i>=ind){
+                                                      printf("%s UNDECLARED\n",(yyvsp[-2])->name);
+                                                      exit(1);
+                                                    }
+                                                    
+                                                    if(symboltable[i]->size != 0){
+                                                      printf("%s IS AN ARRAY\n",(yyvsp[-2])->name);
+                                                      exit(1);
+                                                    }
+                                                    
+                                                    strcpy((yyvsp[-2])->type,symboltable[i]->type);
+                                                    (yyvsp[-2])->symtabindex = i; 
+
+
+                                                    treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                    (yyval) = treenode;
+                                                    (yyval)->nodetype = READ;
+                                                    (yyval)->Ptr1 = (yyvsp[-2]); 
+                                                }
+#line 1626 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 244 "5.y" /* yacc.c:1646  */
+    { 
+                                                  int i = checkpresent((yyvsp[-5]));
+                                                  if(i>=ind){
+                                                    printf("%s UNDECLARED\n",(yyvsp[-5])->name);
+                                                    exit(1);
+                                                  }             
+
+                                                  if(strcmp((yyvsp[-3])->type,"integer") != 0){
+                                                    printf("TYPE ERROR\n");
+                                                    exit(1); 
+                                                  }
+
+                                                  if((symboltable[i]->size == 0)||(*((yyvsp[-3])->datavalue.i) < 0)||(*((yyvsp[-3])->datavalue.i) >= symboltable[i]->size)){
+                                                    printf("ILLEGAL ACCESS\n");
+                                                    exit(1);
+                                                  }
+                                                  
+                                                  
+                                                  strcpy((yyvsp[-5])->type,symboltable[i]->type);
+
+                                                  
+                                                  (yyvsp[-5])->symtabindex = i;
+                                                  strcpy((yyvsp[-5])->type,symboltable[i]->type);
+                                                  (yyvsp[-5])->Ptr1 = (yyvsp[-3]);
+                                                
+                                                  treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                  (yyval) = treenode;
+                                                  (yyval)->nodetype = READ;
+                                                  (yyval)->Ptr1 = (yyvsp[-5]);
+                                                }
+#line 1661 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 276 "5.y" /* yacc.c:1646  */
+    { 
+                                                  treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                  (yyval) = treenode;
+                                                  (yyval)->nodetype = WRITE;
+                                                  (yyval)->Ptr1 = (yyvsp[-2]); 
+                                                }
+#line 1672 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 284 "5.y" /* yacc.c:1646  */
     {                                      
                                       int i = checkpresent((yyvsp[-3]));
                                       if(i>=ind){
@@ -1533,26 +1688,25 @@ yyreduce:
 
                                       if(symboltable[i]->size != 0){
                                         printf("%s IS AN ARRAY\n",symboltable[i]->name);
-                                        exit(1);
+                                        exit(1);  
                                       }
 
+                                      strcpy((yyvsp[-3])->type,symboltable[i]->type);
 
-                                      if(strcmp(symboltable[i]->type,"integer")==0){                                        
-                                        *(symboltable[i]->datavalue.i) = *((yyvsp[-1])->datavalue.i);
-                                      }
-                                      else
-                                        *(symboltable[i]->datavalue.b) = *((yyvsp[-1])->datavalue.b);
-
-                                                                                                                                                  
-                                      free_node((yyvsp[-3]));
-                                      free_node((yyvsp[-1]));
+                                      treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                      (yyvsp[-2]) = treenode;
+                                      (yyvsp[-2])->nodetype = EQUALTO;
+                                      (yyvsp[-2])->Ptr1 = (yyvsp[-3]);
+                                        (yyvsp[-3])->symtabindex = i;                                    
+                                      (yyvsp[-2])->Ptr2 = (yyvsp[-1]);                                      
+                                      (yyval) = (yyvsp[-2]);
 
                                     }
-#line 1552 "y.tab.c" /* yacc.c:1646  */
+#line 1706 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 218 "4.y" /* yacc.c:1646  */
+  case 22:
+#line 314 "5.y" /* yacc.c:1646  */
     {
                                                   int i = checkpresent((yyvsp[-6]));
                                                   if(i>=ind){
@@ -1560,122 +1714,128 @@ yyreduce:
                                                     exit(1);
                                                   }
                                                   
+                                                  if(strcmp((yyvsp[-4])->type,"integer") != 0){
+                                                    printf("SIZE MUST BE A POSITIVE INTEGER\n");
+                                                    exit(1); 
+                                                  }
+
                                                   if((symboltable[i]->size == 0)||(*((yyvsp[-4])->datavalue.i) < 0)||(symboltable[i]->size <= *((yyvsp[-4])->datavalue.i))){
                                                     printf("ILLEGAL ACCESS\n");
                                                     exit(1);
                                                   }
 
-                                                  if((strcmp((yyvsp[-4])->type,"integer") != 0)||(*((yyvsp[-4])->datavalue.i) < 0)){
-                                                    printf("SIZE MUST BE A POSITIVE INTEGER\n");
-                                                    exit(1); 
-                                                  }
-
                                                   if(strcmp(symboltable[i]->type,(yyvsp[-1])->type)!=0){
                                                     printf("TYPE ERROR %s %s\n",symboltable[i]->type,(yyvsp[-1])->type);
                                                     exit(1);
-                                                  }                                                  
-
-                                                  if(strcmp(symboltable[i]->type,"integer")==0){                                        
-                                                    *(symboltable[i]->datavalue.i + *((yyvsp[-4])->datavalue.i)) = *((yyvsp[-1])->datavalue.i);
-                                                  }
-                                                  else{
-                                                    *(symboltable[i]->datavalue.b + *((yyvsp[-4])->datavalue.i)) = *((yyvsp[-1])->datavalue.b);
                                                   }
 
-                                                  
-                                                  free_node((yyvsp[-6]));
-                                                  free_node((yyvsp[-4]));
-                                                  free_node((yyvsp[-1]));
+
+                                                  treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                  (yyvsp[-2]) = treenode;
+                                                  (yyvsp[-2])->nodetype = EQUALTO;
+                                                  (yyvsp[-2])->Ptr1 = (yyvsp[-6]);
+                                                    (yyvsp[-6])->Ptr1 = (yyvsp[-4]);
+                                                    (yyvsp[-6])->symtabindex = i;
+                                                    strcpy((yyvsp[-6])->type,symboltable[i]->type);
+                                                  (yyvsp[-2])->Ptr2 = (yyvsp[-1]);                                      
+                                                  (yyval) = (yyvsp[-2]);
+
                                                 }
-#line 1591 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 18:
-#line 256 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"+"); }
-#line 1597 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 19:
-#line 257 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"-"); }
-#line 1603 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 20:
-#line 258 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"*"); }
-#line 1609 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 21:
-#line 259 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"/"); }
-#line 1615 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 260 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<=");}
-#line 1621 "y.tab.c" /* yacc.c:1646  */
+#line 1745 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 261 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">=");}
-#line 1627 "y.tab.c" /* yacc.c:1646  */
+#line 352 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"+");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = PLUS;}
+#line 1751 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 262 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<");}
-#line 1633 "y.tab.c" /* yacc.c:1646  */
+#line 353 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"-");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = MINUS;}
+#line 1757 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 263 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">");}
-#line 1639 "y.tab.c" /* yacc.c:1646  */
+#line 354 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"*");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = MUL;}
+#line 1763 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 265 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"==");}
-#line 1645 "y.tab.c" /* yacc.c:1646  */
+#line 355 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"/");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = DIV;}
+#line 1769 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 266 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"!=");}
-#line 1651 "y.tab.c" /* yacc.c:1646  */
+#line 356 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"%");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = MOD;}
+#line 1775 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 268 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"&&");}
-#line 1657 "y.tab.c" /* yacc.c:1646  */
+#line 357 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<=");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = LSEQ;}
+#line 1781 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 269 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"||");}
-#line 1663 "y.tab.c" /* yacc.c:1646  */
+#line 358 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">=");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = GREQ;}
+#line 1787 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 270 "4.y" /* yacc.c:1646  */
-    {  (yyval) = operate_int_bool((yyvsp[0]),(yyvsp[0]),"!");}
-#line 1669 "y.tab.c" /* yacc.c:1646  */
+#line 359 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = LSTHAN;}
+#line 1793 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 272 "4.y" /* yacc.c:1646  */
-    { (yyval) = (yyvsp[-1]);}
-#line 1675 "y.tab.c" /* yacc.c:1646  */
+#line 360 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = GRTHAN;}
+#line 1799 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 273 "4.y" /* yacc.c:1646  */
+#line 362 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"==");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = EQEQ;}
+#line 1805 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 33:
+#line 363 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"!=");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = NOTEQ;}
+#line 1811 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 34:
+#line 365 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"&&");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = AND;}
+#line 1817 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 366 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"||");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = OR;}
+#line 1823 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 367 "5.y" /* yacc.c:1646  */
+    {  (yyval) = operate_int_bool((yyvsp[0]),(yyvsp[0]),"!");    (yyval)->Ptr1 = (yyvsp[0]);    (yyval)->nodetype = NOT;}
+#line 1829 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 369 "5.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]);}
+#line 1835 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 370 "5.y" /* yacc.c:1646  */
     {                                                                    
                                     int i = checkpresent((yyvsp[0]));
                                     if(i>=ind){
@@ -1688,20 +1848,16 @@ yyreduce:
                                       exit(1);
                                     }
                                     
-                                    strcpy((yyvsp[0])->type,symboltable[i]->type); 
-                                                                       
-                                    if(strcmp((yyvsp[0])->type,"integer")==0)
-                                      *((yyvsp[0])->datavalue.i) = *(symboltable[i]->datavalue.i);
-                                    else
-                                      *((yyvsp[0])->datavalue.b) = *(symboltable[i]->datavalue.b);
+                                    strcpy((yyvsp[0])->type,symboltable[i]->type);
+                                    (yyvsp[0])->symtabindex = i;                                    
+                                    (yyval)=(yyvsp[0]);                                    
 
-                                    (yyval)=(yyvsp[0]);
                                   }
-#line 1701 "y.tab.c" /* yacc.c:1646  */
+#line 1857 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 33:
-#line 295 "4.y" /* yacc.c:1646  */
+  case 39:
+#line 388 "5.y" /* yacc.c:1646  */
     {
                                 
                                     int i = checkpresent((yyvsp[-3]));
@@ -1722,41 +1878,90 @@ yyreduce:
 
                                     strcpy((yyvsp[-3])->type,symboltable[i]->type);
 
-                                    if(strcmp(symboltable[i]->type,"integer")==0)                                       
-                                      *((yyvsp[-3])->datavalue.i) = *(symboltable[i]->datavalue.i + *((yyvsp[-1])->datavalue.i));                                     
-                                    else
-                                      *((yyvsp[-3])->datavalue.b) = *(symboltable[i]->datavalue.b + *((yyvsp[-1])->datavalue.i));
+                                    (yyvsp[-3])->Ptr1 = (yyvsp[-1]);
+                                    (yyvsp[-3])->symtabindex = i;
+                                    strcpy((yyvsp[-3])->type,symboltable[i]->type);
 
-                                    (yyval)=(yyvsp[-3]);                                  
-                                    free_node((yyvsp[-1]));
+                                    (yyval)=(yyvsp[-3]);
+                                      
+
+                                                                 
+
                                   }
-#line 1734 "y.tab.c" /* yacc.c:1646  */
+#line 1892 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 34:
-#line 324 "4.y" /* yacc.c:1646  */
-    {                                    
-                                    (yyval) = (yyvsp[0]);
+  case 40:
+#line 419 "5.y" /* yacc.c:1646  */
+    { 
+                                    (yyval) = (yyvsp[0]);                                                                                                        
                                   }
-#line 1742 "y.tab.c" /* yacc.c:1646  */
+#line 1900 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 35:
-#line 327 "4.y" /* yacc.c:1646  */
+  case 41:
+#line 422 "5.y" /* yacc.c:1646  */
     {
-                                    (yyval) = (yyvsp[0]);
+                                    (yyval) = (yyvsp[0]);                                    
                                   }
-#line 1750 "y.tab.c" /* yacc.c:1646  */
+#line 1908 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 36:
-#line 332 "4.y" /* yacc.c:1646  */
-    {if(*((yyvsp[-4])->datavalue.b) == false){printf("condition false\n");}}
-#line 1756 "y.tab.c" /* yacc.c:1646  */
+  case 42:
+#line 427 "5.y" /* yacc.c:1646  */
+    {
+                                                                          if(strcmp((yyvsp[-4])->type,"boolean")!=0){
+                                                                              printf("BOOLEAN TYPE REQUIRED FOR EXPRESSION\n");
+                                                                              exit(1);
+                                                                          }
+
+                                                                          treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                                          (yyvsp[-5]) = treenode;
+                                                                          (yyvsp[-5])->nodetype = IF;
+                                                                          (yyvsp[-5])->Ptr1 = (yyvsp[-4]);                                    
+                                                                          (yyvsp[-5])->Ptr2 = (yyvsp[-2]);                                      
+                                                                          (yyval) = (yyvsp[-5]); 
+                                                                      }
+#line 1926 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 440 "5.y" /* yacc.c:1646  */
+    {   
+                                                                          if(strcmp((yyvsp[-6])->type,"boolean")!=0){
+                                                                              printf("BOOLEAN TYPE REQUIRED FOR EXPRESSION\n");
+                                                                              exit(1);
+                                                                          }
+                                                                          treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                                          (yyvsp[-7]) = treenode;
+                                                                          (yyvsp[-7])->nodetype = IF;
+                                                                          (yyvsp[-7])->Ptr1 = (yyvsp[-6]);                                    
+                                                                          (yyvsp[-7])->Ptr2 = (yyvsp[-4]);
+                                                                          (yyvsp[-7])->Ptr3 = (yyvsp[-2]);
+                                                                          (yyval) = (yyvsp[-7]);
+                                                                      }
+#line 1944 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 455 "5.y" /* yacc.c:1646  */
+    { 
+                                                  if(strcmp((yyvsp[-4])->type,"boolean")!=0){
+                                                      printf("BOOLEAN TYPE REQUIRED FOR EXPRESSION\n");
+                                                      exit(1);
+                                                  }
+                                                  treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
+                                                  (yyvsp[-5]) = treenode;
+                                                  (yyvsp[-5])->nodetype = WHILE;
+                                                  (yyvsp[-5])->Ptr1 = (yyvsp[-4]);                                    
+                                                  (yyvsp[-5])->Ptr2 = (yyvsp[-2]);                                      
+                                                  (yyval) = (yyvsp[-5]);
+                                                }
+#line 1961 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1760 "y.tab.c" /* yacc.c:1646  */
+#line 1965 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1984,7 +2189,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 339 "4.y" /* yacc.c:1906  */
+#line 469 "5.y" /* yacc.c:1906  */
 
 
 
@@ -1993,67 +2198,23 @@ yyreturn:
 
 //---------------------------OPERATIONS  INTEGERS TO INTEGER/BOOLEAN-------------------------------
 
-struct vnode* operate_int(struct vnode* one, struct vnode* three, char op[])
+struct Tnode* operate_int(struct Tnode* one, struct Tnode* three, char op[])
 {
     if((strcmp(one->type, three->type) != 0) || ((strcmp(one->type, "integer") != 0) || (strcmp(three->type, "integer") != 0))){
       printf("TYPE ERROR in '+'\n");
       exit(1);
     }
 
-    struct vnode* node;
-    node = (struct vnode *)malloc(sizeof(struct vnode));
+    struct Tnode* node;
+    node = (struct Tnode *)malloc(sizeof(struct Tnode));
     node->datavalue.i = (int*)malloc(sizeof(int));
     node->datavalue.b = (bool*)malloc(sizeof(bool));
 
-    strcpy(node->type,one->type);  
-
-    if(strcmp(op,"+")==0)                                 
-      *(node->datavalue.i) = *(one->datavalue.i) + *(three->datavalue.i);
-    else if(strcmp(op,"-")==0)
-      *(node->datavalue.i) = *(one->datavalue.i) - *(three->datavalue.i);   
-    else if(strcmp(op,"*")==0)
-      *(node->datavalue.i) = *(one->datavalue.i) * *(three->datavalue.i);   
-    else if(strcmp(op,"/")==0){
-        if(*(three->datavalue.i) == 0){
-        printf("DIVIDE BY ZERO\n");
-        exit(1);
-        }
-      *(node->datavalue.i) = *(one->datavalue.i) / *(three->datavalue.i);
-    }
-    else{
-          strcpy(node->type,"boolean");
-
-                if(strcmp(op,"<=")==0){
-                    if(*(one->datavalue.i) <= *(three->datavalue.i))
-                      *(node->datavalue.b) = true;
-                    else
-                      *(node->datavalue.b) = false;
-                }
-                else if(strcmp(op,">=")==0){
-                    if(*(one->datavalue.i) >= *(three->datavalue.i))
-                      *(node->datavalue.b) = true;
-                    else
-                      *(node->datavalue.b) = false;
-                }
-                else if(strcmp(op,"<")==0){
-                    if(*(one->datavalue.i) < *(three->datavalue.i))
-                      *(node->datavalue.b) = true;
-                    else
-                      *(node->datavalue.b) = false;
-                }
-                else{
-                    if(*(one->datavalue.i) > *(three->datavalue.i))
-                      *(node->datavalue.b) = true;
-                    else
-                      *(node->datavalue.b) = false;
-                }
-
-    }
-
-    //printf("%d\n",*(node->datavalue.i));
-
-    free_node(one);
-    free_node(three);
+    if((strcmp(op,"+")==0) || (strcmp(op,"-")==0) || (strcmp(op,"*")==0) || (strcmp(op,"/")==0) || (strcmp(op,"%")==0))
+        
+        strcpy(node->type,"integer");  
+    else
+        strcpy(node->type,"boolean");
 
     return node;
 }
@@ -2062,80 +2223,17 @@ struct vnode* operate_int(struct vnode* one, struct vnode* three, char op[])
 
 //-----------------------OPERATIONS BOOLEAN/INTEGER TO BOOLEAN------------------
 
-struct vnode* operate_int_bool(struct vnode* one, struct vnode* three, char op[])
+struct Tnode* operate_int_bool(struct Tnode* one, struct Tnode* three, char op[])
 {
         if(strcmp(one->type, three->type) != 0){
             printf("TYPE ERROR in '+'\n");
             exit(1);
          }
             
-          struct vnode* node;
-          node = (struct vnode *)malloc(sizeof(struct vnode));
+          struct Tnode* node;
+          node = (struct Tnode *)malloc(sizeof(struct Tnode));
+          node->datavalue.b = (bool*)malloc(sizeof(bool));
           strcpy(node->type,"boolean");
-
-          if((strcmp(one->type,"integer") == 0)&&(strcmp(three->type,"integer") == 0)){
-
-                      if(strcmp(op,"==") == 0){                
-                          if(*(one->datavalue.i) == *(three->datavalue.i))
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }
-                      else if(strcmp(op,"!=") == 0){                
-                          if(*(one->datavalue.i) != *(three->datavalue.i))
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }                         
-                      else if(strcmp(op,"!") == 0){                
-                          if(*(one->datavalue.i) == 0)
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }
-                      else{
-                          printf("TYPE MISMATCH\n");
-                          exit(1);
-                      }                    
-          }
-          else if((strcmp(one->type,"boolean") == 0)&&(strcmp(three->type,"boolean") == 0)){
-
-                      if(strcmp(op,"==") == 0){                
-                          if(*(one->datavalue.b) == *(three->datavalue.b))
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }
-                      else if(strcmp(op,"!=") == 0){                
-                          if(*(one->datavalue.b) != *(three->datavalue.b))
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }
-                      else if(strcmp(op,"&&") == 0){                
-                          if(*(one->datavalue.b) && *(three->datavalue.b))
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }
-                      else if(strcmp(op,"||") == 0){                
-                          if(*(one->datavalue.b) || *(three->datavalue.b))
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }
-                      else{                
-                          if(*(one->datavalue.b) == 0)
-                            *(node->datavalue.b) = true;
-                          else
-                            *(node->datavalue.b) = false;
-                      }                      
-          }
-          else{
-            printf("TYPE MISMATCH\n");
-            exit(1);
-          }
-
 
           return node;
 }
@@ -2144,7 +2242,7 @@ struct vnode* operate_int_bool(struct vnode* one, struct vnode* three, char op[]
 
 //----------FREEING A NODE------------------
 
-void free_node(struct vnode* node)
+void free_node(struct Tnode* node)
 {
   if(node != NULL)
   {
@@ -2169,7 +2267,7 @@ void free_node(struct vnode* node)
 
 
 //-----------------------
-int checkpresent(struct vnode* A)
+int checkpresent(struct Tnode* A)
 {
     int i;                                    
     for(i=0;i<ind;i++)
@@ -2181,6 +2279,202 @@ int checkpresent(struct vnode* A)
 //-----------------------------
 
 
+//============================================================================================
+//======================= ABSTRACT SYNTAC TREE EVALUATION ====================================
+
+int astree(struct Tnode* nd)
+{
+              int r1,r2,r3;
+
+              bool b;
+              
+              char array[100];
+                                          
+              if(nd == NULL){   return 0; }
+            
+
+        //---------        
+                        if(nd->nodetype == STATEMENTLIST){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return 0; }
+        //---------
+                        if(nd->nodetype == EQUALTO){                                                                                                                                                                                    
+                            if(nd->Ptr1->Ptr1 == NULL){
+
+                                    r2 = astree(nd->Ptr2);
+
+                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+
+                                       *(symboltable[nd->Ptr1->symtabindex]->datavalue.i) = r2; 
+                                    else
+                                       *(symboltable[nd->Ptr1->symtabindex]->datavalue.b) = r2;   
+                            }
+                            else{
+                                    
+                                    int index = astree(nd->Ptr1->Ptr1);
+
+                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+
+                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.i + index) = astree(nd->Ptr2);   
+                                    else
+                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b + index) = astree(nd->Ptr2);
+                            }                                                  
+
+                            return 1;
+                        }
+
+        //---------
+                        if(nd->nodetype == ID){   
+                            
+                            if(nd->Ptr1 == NULL){
+
+                                  if(strcmp(nd->type,"integer")==0)
+
+                                      return *(symboltable[nd->symtabindex]->datavalue.i);
+                                  else
+                                      return *(symboltable[nd->symtabindex]->datavalue.b);
+                            }                                                    
+                            else{
+
+                                if(strcmp(nd->type,"integer")==0)
+                            
+                                    return *(symboltable[nd->symtabindex]->datavalue.i + astree(nd->Ptr1));
+                                else
+                                    return *(symboltable[nd->symtabindex]->datavalue.b + astree(nd->Ptr1));
+                            }
+
+                        }
+
+
+        //--------
+                        if(nd->nodetype == NUM){  return *(nd->datavalue.i); }
+
+                        if(nd->nodetype == BOOL){ return *(nd->datavalue.b); }                      
+
+                        if(nd->nodetype == PLUS){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 + r2; }
+
+                        if(nd->nodetype == MINUS){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 - r2; }
+
+                        if(nd->nodetype == MUL){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 * r2; }
+
+                        if(nd->nodetype == DIV){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 / r2; }
+
+                        if(nd->nodetype == MOD){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 % r2; } 
+
+                        if(nd->nodetype == LSEQ){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 <= r2; } 
+
+                        if(nd->nodetype == GREQ){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 >= r2; } 
+
+                        if(nd->nodetype == LSTHAN){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 < r2; } 
+
+                        if(nd->nodetype == GRTHAN){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 > r2; } 
+
+                        if(nd->nodetype == EQEQ){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 == r2; }
+
+                        if(nd->nodetype == NOTEQ){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 != r2; }
+
+                        if(nd->nodetype == AND){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 && r2; }
+
+                        if(nd->nodetype == OR){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 || r2; }
+
+                        if(nd->nodetype == NOT){ r1 = astree(nd->Ptr1); return !r1; }
+
+        //---------
+                        if(nd->nodetype == IF){
+
+                            if(nd->Ptr3 == NULL){   b = astree(nd->Ptr1);   if(b == true) astree(nd->Ptr2);   }                          
+
+                            else{   b = astree(nd->Ptr1);
+                                
+                                if(b == true){  r1 = astree(nd->Ptr2); }
+                                
+                                else{   r1= astree(nd->Ptr3); }
+                            }
+
+                            return 0;
+                        }
+
+          //---------
+                        if(nd->nodetype == WHILE){  b = astree(nd->Ptr1);
+
+                          while(b == true){   r1 = astree(nd->Ptr2);  b = astree(nd->Ptr1);   }
+
+                          return 0;
+                        }
+
+          //---------
+                        if(nd->nodetype == READ){
+
+                            if(nd->Ptr1->Ptr1 == NULL){
+                                    
+                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+
+                                       scanf("%d",symboltable[nd->Ptr1->symtabindex]->datavalue.i);
+
+                                    else{ scanf("%s",array);                                                                          
+
+                                      if(strcmp(array,"true")==0)
+
+                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b) = true;
+                                      else
+                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b) = false;
+                                    }
+                            }
+                            else{
+                                    
+                                    int index = astree(nd->Ptr1->Ptr1);
+
+                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+
+                                        scanf("%d",symboltable[nd->Ptr1->symtabindex]->datavalue.i + index);
+
+                                    else{  scanf("%s",array);                                                                            
+                                      
+                                      if(strcmp(array,"true")==0)
+
+                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b + index) = true;                                        
+                                      else
+                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b + index) = false;
+                                    }                                        
+                            }
+
+                            return 0;
+                        }
+          //---------
+                        if(nd->nodetype == WRITE){  r1 = astree(nd->Ptr1);  printf("%d\n",r1);  return 0; }
+
+
+return 0;
+}
+//============================================================================================
+
+
+
+//---------------SHOW SYMBOLTABLE--------------
+
+void show_symboltable()
+{
+    int j=0;
+
+    for(j=0;j<ind;j++)
+    {
+          printf("%s %s %d\n",symboltable[j]->name, symboltable[j]->type,symboltable[j]->size);
+
+          int i=0,length;
+          
+          if(symboltable[j]->size == 0){  length=1; }
+
+          else{ length = symboltable[j]->size; }
+          
+          for(i=0;i<length;i++)
+          {
+            if(strcmp(symboltable[j]->type,"integer")==0){  printf("%d ",(symboltable[j]->datavalue.i)[i]); }
+            
+            else{   printf("%d ",(symboltable[j]->datavalue.b)[i]); }
+
+          }
+          
+          printf("\n");
+      }
+}
 
 yyerror()
 {
