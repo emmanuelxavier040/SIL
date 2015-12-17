@@ -62,7 +62,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "6.y" /* yacc.c:339  */
+#line 1 "7.y" /* yacc.c:339  */
 
 
     #include <stdio.h>
@@ -87,7 +87,23 @@
     void checktype(char [], char []);
 
 
-#line 91 "y.tab.c" /* yacc.c:339  */
+    int check=0;
+
+
+    FILE *fp;
+
+    int regcount = 0;
+    int getreg();    
+    void freereg();
+    
+    int lablecount = -1;
+    int getlable();
+
+    int memno = 0;
+    int getmem(int);
+
+
+#line 107 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -214,7 +230,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 218 "y.tab.c" /* yacc.c:358  */
+#line 234 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -515,11 +531,11 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    81,    81,    90,    93,    94,    97,   102,   107,   112,
-     119,   122,   128,   135,   136,   137,   138,   139,   142,   161,
-     189,   197,   224,   259,   260,   261,   262,   263,   264,   265,
-     266,   267,   269,   270,   272,   273,   274,   276,   277,   295,
-     327,   330,   335,   344,   356
+       0,    97,    97,   117,   120,   121,   124,   129,   134,   139,
+     146,   149,   155,   162,   163,   164,   165,   166,   169,   188,
+     216,   224,   251,   286,   287,   288,   289,   290,   291,   292,
+     293,   294,   296,   297,   299,   300,   301,   303,   304,   322,
+     351,   354,   359,   368,   380
 };
 #endif
 
@@ -1388,132 +1404,143 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 81 "6.y" /* yacc.c:1646  */
+#line 97 "7.y" /* yacc.c:1646  */
     {
                                       (yyval) = (yyvsp[0]);                                      
+                                      fp = fopen("sample.sim","w");
+
+                                      fprintf(fp,"START\n");                                      
+                                      
                                       int l = astree((yyval));
+                                      
+                                      fprintf(fp,"HALT\n");
+                                      
+                                      fclose(fp);
+
+                                      printf("\n\n-------%d---------\n\n",regcount);
+
                                       show_symboltable();
                                       printf("\nComplete\n");
                                       exit(1);
                                     }
-#line 1400 "y.tab.c" /* yacc.c:1646  */
+#line 1427 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 90 "6.y" /* yacc.c:1646  */
+#line 117 "7.y" /* yacc.c:1646  */
     {  }
-#line 1406 "y.tab.c" /* yacc.c:1646  */
+#line 1433 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 93 "6.y" /* yacc.c:1646  */
+#line 120 "7.y" /* yacc.c:1646  */
     {  }
-#line 1412 "y.tab.c" /* yacc.c:1646  */
+#line 1439 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 94 "6.y" /* yacc.c:1646  */
+#line 121 "7.y" /* yacc.c:1646  */
     {  }
-#line 1418 "y.tab.c" /* yacc.c:1646  */
+#line 1445 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 97 "6.y" /* yacc.c:1646  */
+#line 124 "7.y" /* yacc.c:1646  */
     { 
                                                       install_symbol((yyvsp[-1]),"integer",0);     
                                                       free_node((yyvsp[-1]));  
                                                     }
-#line 1427 "y.tab.c" /* yacc.c:1646  */
+#line 1454 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 102 "6.y" /* yacc.c:1646  */
+#line 129 "7.y" /* yacc.c:1646  */
     {  
                                                       install_symbol((yyvsp[-1]),"boolean",0);     
                                                       free_node((yyvsp[-1]));  
                                                     }
-#line 1436 "y.tab.c" /* yacc.c:1646  */
+#line 1463 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 107 "6.y" /* yacc.c:1646  */
+#line 134 "7.y" /* yacc.c:1646  */
     { 
                                                       install_symbol((yyvsp[-4]),"integer",*((yyvsp[-2])->datavalue.i));                                                 
                                                       free_node((yyvsp[-4]));
                                                       free_node((yyvsp[-2]));
                                                     }
-#line 1446 "y.tab.c" /* yacc.c:1646  */
+#line 1473 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 112 "6.y" /* yacc.c:1646  */
+#line 139 "7.y" /* yacc.c:1646  */
     {                                                     
                                                       install_symbol((yyvsp[-4]),"boolean",*((yyvsp[-2])->datavalue.i));
                                                       free_node((yyvsp[-4]));
                                                       free_node((yyvsp[-2]));                                              
                                                     }
-#line 1456 "y.tab.c" /* yacc.c:1646  */
+#line 1483 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 119 "6.y" /* yacc.c:1646  */
+#line 146 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[-1]);}
-#line 1462 "y.tab.c" /* yacc.c:1646  */
+#line 1489 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 122 "6.y" /* yacc.c:1646  */
+#line 149 "7.y" /* yacc.c:1646  */
     { treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
                                           (yyval) = treenode;
                                           (yyval)->nodetype = STATEMENTLIST;
                                           (yyval)->Ptr1 = (yyvsp[-1]);
                                           (yyval)->Ptr2 = (yyvsp[0]);
                                         }
-#line 1473 "y.tab.c" /* yacc.c:1646  */
+#line 1500 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 128 "6.y" /* yacc.c:1646  */
+#line 155 "7.y" /* yacc.c:1646  */
     { treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
                                           (yyval) = treenode;
                                           (yyval)->nodetype = STATEMENTLIST;
-                                          (yyval)->Ptr1 = (yyvsp[0]);
+                                          (yyval) = (yyvsp[0]);
                                         }
-#line 1483 "y.tab.c" /* yacc.c:1646  */
+#line 1510 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 135 "6.y" /* yacc.c:1646  */
+#line 162 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[0]);}
-#line 1489 "y.tab.c" /* yacc.c:1646  */
+#line 1516 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 136 "6.y" /* yacc.c:1646  */
+#line 163 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[0]);}
-#line 1495 "y.tab.c" /* yacc.c:1646  */
+#line 1522 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 137 "6.y" /* yacc.c:1646  */
+#line 164 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[0]);}
-#line 1501 "y.tab.c" /* yacc.c:1646  */
+#line 1528 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 138 "6.y" /* yacc.c:1646  */
+#line 165 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[0]);}
-#line 1507 "y.tab.c" /* yacc.c:1646  */
+#line 1534 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 139 "6.y" /* yacc.c:1646  */
+#line 166 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[0]);}
-#line 1513 "y.tab.c" /* yacc.c:1646  */
+#line 1540 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 142 "6.y" /* yacc.c:1646  */
+#line 169 "7.y" /* yacc.c:1646  */
     {   int i = checkpresent((yyvsp[-2]));
                                                     if(i>=ind){
                                                       printf("%s UNDECLARED\n",(yyvsp[-2])->name);
@@ -1533,11 +1560,11 @@ yyreduce:
                                                     (yyval)->nodetype = READ;
                                                     (yyval)->Ptr1 = (yyvsp[-2]); 
                                                 }
-#line 1537 "y.tab.c" /* yacc.c:1646  */
+#line 1564 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 161 "6.y" /* yacc.c:1646  */
+#line 188 "7.y" /* yacc.c:1646  */
     { 
                                                   int i = checkpresent((yyvsp[-5]));
                                                   if(i>=ind){
@@ -1564,22 +1591,22 @@ yyreduce:
                                                   (yyval)->nodetype = READ;
                                                   (yyval)->Ptr1 = (yyvsp[-5]);
                                                 }
-#line 1568 "y.tab.c" /* yacc.c:1646  */
+#line 1595 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 189 "6.y" /* yacc.c:1646  */
+#line 216 "7.y" /* yacc.c:1646  */
     { 
                                                   treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
                                                   (yyval) = treenode;
                                                   (yyval)->nodetype = WRITE;
                                                   (yyval)->Ptr1 = (yyvsp[-2]); 
                                                 }
-#line 1579 "y.tab.c" /* yacc.c:1646  */
+#line 1606 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 197 "6.y" /* yacc.c:1646  */
+#line 224 "7.y" /* yacc.c:1646  */
     {                                      
                                       int i = checkpresent((yyvsp[-3]));
                                       if(i>=ind){
@@ -1606,11 +1633,11 @@ yyreduce:
                                       (yyval) = (yyvsp[-2]);
 
                                     }
-#line 1610 "y.tab.c" /* yacc.c:1646  */
+#line 1637 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 224 "6.y" /* yacc.c:1646  */
+#line 251 "7.y" /* yacc.c:1646  */
     {
                                                   int i = checkpresent((yyvsp[-6]));
                                                   if(i>=ind){
@@ -1642,101 +1669,101 @@ yyreduce:
                                                   (yyval) = (yyvsp[-2]);
 
                                                 }
-#line 1646 "y.tab.c" /* yacc.c:1646  */
+#line 1673 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 259 "6.y" /* yacc.c:1646  */
+#line 286 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"+");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = PLUS;}
-#line 1652 "y.tab.c" /* yacc.c:1646  */
+#line 1679 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 260 "6.y" /* yacc.c:1646  */
+#line 287 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"-");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = MINUS;}
-#line 1658 "y.tab.c" /* yacc.c:1646  */
+#line 1685 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 261 "6.y" /* yacc.c:1646  */
+#line 288 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"*");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = MUL;}
-#line 1664 "y.tab.c" /* yacc.c:1646  */
+#line 1691 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 262 "6.y" /* yacc.c:1646  */
+#line 289 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"/");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = DIV;}
-#line 1670 "y.tab.c" /* yacc.c:1646  */
+#line 1697 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 263 "6.y" /* yacc.c:1646  */
+#line 290 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"%");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = MOD;}
-#line 1676 "y.tab.c" /* yacc.c:1646  */
+#line 1703 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 264 "6.y" /* yacc.c:1646  */
+#line 291 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<=");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = LSEQ;}
-#line 1682 "y.tab.c" /* yacc.c:1646  */
+#line 1709 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 265 "6.y" /* yacc.c:1646  */
+#line 292 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">=");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = GREQ;}
-#line 1688 "y.tab.c" /* yacc.c:1646  */
+#line 1715 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 266 "6.y" /* yacc.c:1646  */
+#line 293 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),"<");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = LSTHAN;}
-#line 1694 "y.tab.c" /* yacc.c:1646  */
+#line 1721 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 267 "6.y" /* yacc.c:1646  */
+#line 294 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int((yyvsp[-2]),(yyvsp[0]),">");    (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);    (yyval)->nodetype = GRTHAN;}
-#line 1700 "y.tab.c" /* yacc.c:1646  */
+#line 1727 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 269 "6.y" /* yacc.c:1646  */
+#line 296 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"==");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = EQEQ;}
-#line 1706 "y.tab.c" /* yacc.c:1646  */
+#line 1733 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 270 "6.y" /* yacc.c:1646  */
+#line 297 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"!=");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = NOTEQ;}
-#line 1712 "y.tab.c" /* yacc.c:1646  */
+#line 1739 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 272 "6.y" /* yacc.c:1646  */
+#line 299 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"&&");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = AND;}
-#line 1718 "y.tab.c" /* yacc.c:1646  */
+#line 1745 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 273 "6.y" /* yacc.c:1646  */
+#line 300 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[-2]),(yyvsp[0]),"||");   (yyval)->Ptr1 = (yyvsp[-2]);    (yyval)->Ptr2 = (yyvsp[0]);   (yyval)->nodetype = OR;}
-#line 1724 "y.tab.c" /* yacc.c:1646  */
+#line 1751 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 274 "6.y" /* yacc.c:1646  */
+#line 301 "7.y" /* yacc.c:1646  */
     {  (yyval) = operate_int_bool((yyvsp[0]),(yyvsp[0]),"!");    (yyval)->Ptr1 = (yyvsp[0]);    (yyval)->nodetype = NOT;}
-#line 1730 "y.tab.c" /* yacc.c:1646  */
+#line 1757 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 276 "6.y" /* yacc.c:1646  */
+#line 303 "7.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[-1]);}
-#line 1736 "y.tab.c" /* yacc.c:1646  */
+#line 1763 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 277 "6.y" /* yacc.c:1646  */
+#line 304 "7.y" /* yacc.c:1646  */
     {                                                                    
                                     int i = checkpresent((yyvsp[0]));
                                     if(i>=ind){
@@ -1754,11 +1781,11 @@ yyreduce:
                                     (yyval)=(yyvsp[0]);                                    
 
                                   }
-#line 1758 "y.tab.c" /* yacc.c:1646  */
+#line 1785 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 295 "6.y" /* yacc.c:1646  */
+#line 322 "7.y" /* yacc.c:1646  */
     {
                                 
                                     int i = checkpresent((yyvsp[-3]));
@@ -1772,10 +1799,7 @@ yyreduce:
                                       exit(1);
                                     }
                                     
-                                    if(strcmp((yyvsp[-1])->type,"integer") != 0){
-                                      printf("TYPE ERROR\n");
-                                      exit(1); 
-                                    }
+                                    
                                     checktype((yyvsp[-1])->type,"integer");
 
                                     strcpy((yyvsp[-3])->type,symboltable[i]->type);
@@ -1790,27 +1814,27 @@ yyreduce:
                                                                  
 
                                   }
-#line 1794 "y.tab.c" /* yacc.c:1646  */
+#line 1818 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 327 "6.y" /* yacc.c:1646  */
+#line 351 "7.y" /* yacc.c:1646  */
     { 
                                     (yyval) = (yyvsp[0]);                                                                                                        
                                   }
-#line 1802 "y.tab.c" /* yacc.c:1646  */
+#line 1826 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 330 "6.y" /* yacc.c:1646  */
+#line 354 "7.y" /* yacc.c:1646  */
     {
                                     (yyval) = (yyvsp[0]);                                    
                                   }
-#line 1810 "y.tab.c" /* yacc.c:1646  */
+#line 1834 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 335 "6.y" /* yacc.c:1646  */
+#line 359 "7.y" /* yacc.c:1646  */
     {
                                                                           checktype((yyvsp[-4])->type,"boolean");
                                                                           treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
@@ -1820,11 +1844,11 @@ yyreduce:
                                                                           (yyvsp[-5])->Ptr2 = (yyvsp[-2]);                                      
                                                                           (yyval) = (yyvsp[-5]); 
                                                                       }
-#line 1824 "y.tab.c" /* yacc.c:1646  */
+#line 1848 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 344 "6.y" /* yacc.c:1646  */
+#line 368 "7.y" /* yacc.c:1646  */
     {   
                                                                           checktype((yyvsp[-6])->type,"boolean");
                                                                           treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
@@ -1835,11 +1859,11 @@ yyreduce:
                                                                           (yyvsp[-7])->Ptr3 = (yyvsp[-2]);
                                                                           (yyval) = (yyvsp[-7]);
                                                                       }
-#line 1839 "y.tab.c" /* yacc.c:1646  */
+#line 1863 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 356 "6.y" /* yacc.c:1646  */
+#line 380 "7.y" /* yacc.c:1646  */
     { 
                                                   checktype((yyvsp[-4])->type,"boolean");
                                                   treenode = (struct Tnode*)malloc(sizeof(struct Tnode));
@@ -1849,11 +1873,11 @@ yyreduce:
                                                   (yyvsp[-5])->Ptr2 = (yyvsp[-2]);                                      
                                                   (yyval) = (yyvsp[-5]);
                                                 }
-#line 1853 "y.tab.c" /* yacc.c:1646  */
+#line 1877 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1857 "y.tab.c" /* yacc.c:1646  */
+#line 1881 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2081,8 +2105,34 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 367 "6.y" /* yacc.c:1906  */
+#line 391 "7.y" /* yacc.c:1906  */
 
+
+
+int getmem(int len)
+{  
+  int temp = memno;
+  memno = memno + len;
+  return temp;
+}
+
+int getlable()
+{
+  lablecount++;
+  return lablecount;
+}
+
+int getreg()
+{
+  int temp = regcount;
+  regcount++;
+  return temp;
+}
+
+void freereg()
+{
+  regcount--;
+}
 
 
 
@@ -2113,10 +2163,14 @@ void install_symbol(struct Tnode* identifier, char type[], int size)
         if(size == 0){
 
             ptr->datavalue.i = (int*)malloc(sizeof(int));   *(ptr->datavalue.i) = 0;
+
+            ptr->store = getmem(1);
         }
         else{
 
             ptr->datavalue.i = (int*)malloc(size * sizeof(int));    memset(ptr->datavalue.i,0,size);  
+
+            ptr->store = getmem(size);
         }
     }
     else{
@@ -2126,10 +2180,14 @@ void install_symbol(struct Tnode* identifier, char type[], int size)
         if(size == 0){
 
             ptr->datavalue.b = (bool*)malloc(sizeof(bool));  *(ptr->datavalue.i) = false;
+
+            ptr->store = getmem(1);
         }
         else{
 
             ptr->datavalue.b = (bool*)malloc(size * sizeof(bool));    memset(ptr->datavalue.i,0,size);
+
+            ptr->store = getmem(size);
         }
     }
         
@@ -2243,12 +2301,7 @@ int astree(struct Tnode* nd)
 {
               int r1,r2,r3;
 
-              bool b;
-              
-              char array[100];
-                                          
-              if(nd == NULL){   return 0; }
-            
+
 
         //---------        
                         if(nd->nodetype == STATEMENTLIST){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return 0; }
@@ -2258,24 +2311,36 @@ int astree(struct Tnode* nd)
 
                                     r2 = astree(nd->Ptr2);
 
-                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+                                    fprintf(fp,"MOV [%d], R%d\n",symboltable[nd->Ptr1->symtabindex]->store,r2);
 
-                                       *(symboltable[nd->Ptr1->symtabindex]->datavalue.i) = r2; 
-                                    else
-                                       *(symboltable[nd->Ptr1->symtabindex]->datavalue.b) = r2;   
+                                    freereg();
+
+                                    printf("------------%d-----------\n",regcount);
                             }
                             else{
                                     
+                                                                                                           
+                                    r2 = getreg();
+
+                                    fprintf(fp,"MOV R%d, %d\n", r2, symboltable[nd->Ptr1->symtabindex]->store);
+                                  
                                     int index = astree(nd->Ptr1->Ptr1);
 
-                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+                                    fprintf(fp,"ADD R%d, R%d\n", r2, index);
 
-                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.i + index) = astree(nd->Ptr2);   
-                                    else
-                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b + index) = astree(nd->Ptr2);
+                                    freereg();  
+                                                                                                      
+                                    fprintf(fp,"MOV [R%d], R%d\n", r2, astree(nd->Ptr2));                
+                                    
+                                    freereg();
+
+                                    freereg();
+
+                                    printf("------------%d-----------\n",regcount);
+
                             }                                                  
 
-                            return 1;
+                            return 0;
                         }
 
         //---------
@@ -2283,120 +2348,291 @@ int astree(struct Tnode* nd)
                             
                             if(nd->Ptr1 == NULL){
 
-                                  if(strcmp(nd->type,"integer")==0)
+                                      r1 = getreg();
 
-                                      return *(symboltable[nd->symtabindex]->datavalue.i);
-                                  else
-                                      return *(symboltable[nd->symtabindex]->datavalue.b);
+                                      fprintf(fp,"MOV R%d, [%d]\n", r1, symboltable[nd->symtabindex]->store); 
+
+                                      return r1;                
+                                 
                             }                                                    
                             else{
+                                      r2 = getreg();
 
-                                if(strcmp(nd->type,"integer")==0)
-                            
-                                    return *(symboltable[nd->symtabindex]->datavalue.i + astree(nd->Ptr1));
-                                else
-                                    return *(symboltable[nd->symtabindex]->datavalue.b + astree(nd->Ptr1));
+                                      r1 = getreg();
+                                      
+                                      fprintf(fp,"MOV R%d, %d\n", r1, symboltable[nd->symtabindex]->store);
+
+                                      int index = astree(nd->Ptr1);
+
+                                      fprintf(fp,"ADD R%d, R%d\n", r1, index);
+
+                                      freereg();                                    
+
+                                      fprintf(fp,"MOV R%d, [R%d]\n", r2, r1); 
+
+                                      freereg();
+
+                                      return r2;                                  
                             }
 
+                          return 0;
                         }
 
 
         //--------
-                        if(nd->nodetype == NUM){  printf("hi\n");return *(nd->datavalue.i); }
+                        if(nd->nodetype == NUM){  
+                                                    r1 = getreg();
 
-                        if(nd->nodetype == BOOL){ return *(nd->datavalue.b); }                      
+                                                    fprintf(fp,"MOV R%d, %d\n",r1,*(nd->datavalue.i));
 
-                        if(nd->nodetype == PLUS){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 + r2; }
+                                                    return r1;
+                                               }
 
-                        if(nd->nodetype == MINUS){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 - r2; }
+                        if(nd->nodetype == BOOL){ 
+                                                    r1 = getreg();
 
-                        if(nd->nodetype == MUL){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 * r2; }
+                                                    fprintf(fp,"MOV R%d, %d\n",r1,*(nd->datavalue.b));
 
-                        if(nd->nodetype == DIV){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 / r2; }
+                                                    return r1; 
+                                                }                      
 
-                        if(nd->nodetype == MOD){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 % r2; } 
+                        if(nd->nodetype == PLUS){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
 
-                        if(nd->nodetype == LSEQ){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 <= r2; } 
+                                                    fprintf(fp,"ADD R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
 
-                        if(nd->nodetype == GREQ){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 >= r2; } 
+                        if(nd->nodetype == MINUS){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
 
-                        if(nd->nodetype == LSTHAN){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 < r2; } 
+                                                    fprintf(fp,"SUB R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
 
-                        if(nd->nodetype == GRTHAN){  r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 > r2; } 
+                        if(nd->nodetype == MUL){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
 
-                        if(nd->nodetype == EQEQ){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 == r2; }
+                                                    fprintf(fp,"MUL R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
 
-                        if(nd->nodetype == NOTEQ){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 != r2; }
+                        if(nd->nodetype == DIV){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
 
-                        if(nd->nodetype == AND){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 && r2; }
+                                                    fprintf(fp,"DIV R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
 
-                        if(nd->nodetype == OR){ r1 = astree(nd->Ptr1);  r2 = astree(nd->Ptr2);  return r1 || r2; }
+                        if(nd->nodetype == MOD){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
 
-                        if(nd->nodetype == NOT){ r1 = astree(nd->Ptr1); return !r1; }
+                                                    fprintf(fp,"MOD R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
+
+                        if(nd->nodetype == LSEQ){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
+
+                                                    fprintf(fp,"LE R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
+
+                        if(nd->nodetype == GREQ){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
+
+                                                    fprintf(fp,"GE R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
+
+                        if(nd->nodetype == LSTHAN){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
+
+                                                    fprintf(fp,"LT R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
+
+                        if(nd->nodetype == GRTHAN){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
+
+                                                    fprintf(fp,"GT R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
+
+                        if(nd->nodetype == EQEQ){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
+
+                                                    fprintf(fp,"EQ R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }
+
+                        if(nd->nodetype == NOTEQ){ 
+                                                    r1 = astree(nd->Ptr1);  
+                                                    r2 = astree(nd->Ptr2); 
+
+                                                    fprintf(fp,"NE R%d, R%d\n", r1,r2);           
+                                                    
+                                                    freereg();
+                                                    return r1;
+                                                }                      
 
         //---------
                         if(nd->nodetype == IF){
 
-                            if(nd->Ptr3 == NULL){   b = astree(nd->Ptr1);   if(b == true) astree(nd->Ptr2);   }                          
+                            if(nd->Ptr3 == NULL){ 
+                            
+                                int l2 = getlable();
 
-                            else{   b = astree(nd->Ptr1);
+                                r1 = astree(nd->Ptr1);   
+
+                                fprintf(fp,"JZ R%d, L%d\n",r1,l2);
+
+                                freereg();
+                                                            
+                                      astree(nd->Ptr2);
+
+                                fprintf(fp,"L%d:\n",l2);
+                            }                          
+
+                            else{   
+
+                                int l1 = getlable();
+
+                                int l2 = getlable();
+
+                                r1 = astree(nd->Ptr1);
                                 
-                                if(b == true){  r1 = astree(nd->Ptr2); }
+                                fprintf(fp,"JZ R%d, L%d\n",r1,l1);
+
+                                freereg();
+
+                                        astree(nd->Ptr2); 
+                                                                                                
+                                fprintf(fp,"JMP L%d\n",l2);
+
+                                fprintf(fp,"L%d:\n",l1);
+
+                                        astree(nd->Ptr3); 
+
+                                fprintf(fp,"L%d:\n",l2);
                                 
-                                else{   r1= astree(nd->Ptr3); }
                             }
 
                             return 0;
                         }
 
           //---------
-                        if(nd->nodetype == WHILE){  b = astree(nd->Ptr1);
+                        if(nd->nodetype == WHILE){  
 
-                          while(b == true){   r1 = astree(nd->Ptr2);  b = astree(nd->Ptr1);   }
+                              int l1 = getlable();
 
-                          return 0;
+                              int l2 = getlable();
+
+                              r1 = astree(nd->Ptr1);
+
+                              fprintf(fp,"L%d:\n",l1);                              
+
+                              fprintf(fp,"JZ R%d, L%d\n",r1,l2);
+
+                              freereg();
+                                                    
+                                    astree(nd->Ptr2);  
+
+                                    r1 = astree(nd->Ptr1);
+
+                              fprintf(fp,"JMP L%d\n",l1);                             
+
+                              fprintf(fp,"L%d:\n",l2);
+
+                              freereg();
+                              
+                              return 0;
                         }
 
           //---------
                         if(nd->nodetype == READ){
 
                             if(nd->Ptr1->Ptr1 == NULL){
-                                    
-                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
 
-                                       scanf("%d",symboltable[nd->Ptr1->symtabindex]->datavalue.i);
 
-                                    else{ scanf("%s",array);                                                                          
+                                    r1 = getreg();
 
-                                      if(strcmp(array,"true")==0)
+                                    fprintf(fp,"IN R%d\n",r1);
 
-                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b) = true;
-                                      else
-                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b) = false;
-                                    }
+                                    fprintf(fp,"MOV [%d], R%d\n", symboltable[nd->Ptr1->symtabindex]->store,r1);
+
+                                    freereg();
+
+                                    return 0;                                    
                             }
-                            else{
+                            else{                                    
+
+                                    r1 = getreg();
                                     
+                                    fprintf(fp,"MOV R%d, %d\n", r1, symboltable[nd->Ptr1->symtabindex]->store);
+
                                     int index = astree(nd->Ptr1->Ptr1);
 
-                                    if(strcmp(symboltable[nd->Ptr1->symtabindex]->type,"integer")==0)
+                                    fprintf(fp,"ADD R%d, R%d\n", r1, index);  
 
-                                        scanf("%d",symboltable[nd->Ptr1->symtabindex]->datavalue.i + index);
+                                    freereg();                                  
 
-                                    else{  scanf("%s",array);                                                                            
-                                      
-                                      if(strcmp(array,"true")==0)
+                                    r2 = getreg();
 
-                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b + index) = true;                                        
-                                      else
-                                        *(symboltable[nd->Ptr1->symtabindex]->datavalue.b + index) = false;
-                                    }                                        
+                                    fprintf(fp,"IN R%d\n",r2);
+
+                                    fprintf(fp,"MOV [R%d], R%d\n", r1, r2); 
+
+                                    freereg();                                  
+                                    
+                                    freereg();
+
+                                    return 0;                                                          
                             }
 
                             return 0;
                         }
           //---------
-                        if(nd->nodetype == WRITE){  r1 = astree(nd->Ptr1);  printf("%d\n",r1);  return 0; }
+                        if(nd->nodetype == WRITE){  
+
+                                    r1 = astree(nd->Ptr1);  
+
+                                    fprintf(fp,"OUT R%d\n",r1);
+
+                                    freereg();
+
+                                    return 0;
+                        }
 
 
 return 0;
@@ -2413,7 +2649,7 @@ void show_symboltable()
 
     for(j=0;j<ind;j++)
     {
-          printf("%s %s %d\n",symboltable[j]->name, symboltable[j]->type,symboltable[j]->size);
+          printf("%s %s %d %d\n",symboltable[j]->name, symboltable[j]->type,symboltable[j]->size, symboltable[j]->store);
 
           int i=0,length;
           
